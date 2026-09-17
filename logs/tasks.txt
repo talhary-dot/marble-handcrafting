@@ -545,3 +545,15 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
    - Fixed sticky position bug on mobile screens in `app/product/[id]/page.tsx` and `app/product/[id]/product-detail-client.tsx`.
    - Replaced unconditional `sticky top-28` with `lg:sticky lg:top-28` so the product image container flows naturally on mobile/tablet viewports and sticks only on large desktop viewports (`lg:`+), eliminating element overlapping on scroll.
 ================================================================================
+
+15. HOMEPAGE & HERO MOBILE RESPONSIVE POLISH
+   - Updated `components/boty/hero.tsx`:
+     * Adjusted top section padding (`pt-28 pb-16 sm:py-24 lg:py-28`) providing clean clearance below the floating fixed navigation header.
+     * Fixed tab truncation on mobile by introducing clean `shortName` labels (`Marble Tray`, `Stone Vessel`, `Totem Stand`) for mobile breakpoints while retaining full numbered titles on larger viewports.
+     * Fixed trust metrics alignment: Updated "Hand" orphan to "Hand-Cut" with responsive gap (`gap-2 sm:gap-4`) and typography (`text-lg sm:text-2xl`) preventing text collision.
+     * Adjusted floating badges and bottom action card inside the image frame with responsive padding (`p-3 sm:p-5`) and font sizes to eliminate overflow.
+     * Updated bottom proof strip with responsive text and wrapping (`5.0 (140+ Reviews)` & `Solid Natural Stone`) avoiding right-edge clipping.
+   - Updated `components/boty/header.tsx`:
+     * Enhanced mobile header padding (`px-3 pt-3 sm:px-4 sm:pt-4`) and nav inner height (`h-[64px] sm:h-[70px]`).
+     * Added responsive brand logo scaling (`text-xl sm:text-2xl md:text-3xl`).
+================================================================================

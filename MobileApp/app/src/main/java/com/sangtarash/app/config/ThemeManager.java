@@ -106,6 +106,32 @@ public class ThemeManager {
         return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
     }
 
+    public static int getSecondaryBtnBg(boolean isDark) {
+        return isDark ? 0xFF161616 : 0xFFEDEAE3;
+    }
+
+    public static android.graphics.drawable.GradientDrawable createSecondaryButtonDrawable(boolean isDark, float cornerRadiusPx) {
+        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        gd.setColor(getSecondaryBtnBg(isDark));
+        gd.setCornerRadius(cornerRadiusPx);
+        gd.setStroke(1, getBorderColor(isDark));
+        return gd;
+    }
+
+    public static android.graphics.drawable.GradientDrawable createVariantCardDrawable(boolean isDark, boolean isSelected, float cornerRadiusPx) {
+        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+        if (isSelected) {
+            gd.setColor(isDark ? 0xFF2D2416 : 0xFFF5EEDD);
+            gd.setCornerRadius(cornerRadiusPx);
+            gd.setStroke(3, isDark ? 0xFFC5A059 : 0xFF8C6D37);
+        } else {
+            gd.setColor(getCardColor(isDark));
+            gd.setCornerRadius(cornerRadiusPx);
+            gd.setStroke(1, getBorderColor(isDark));
+        }
+        return gd;
+    }
+
     public static android.graphics.drawable.GradientDrawable createCardDrawable(boolean isDark, float cornerRadiusPx) {
         android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
         gd.setColor(getCardColor(isDark));

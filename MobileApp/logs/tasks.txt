@@ -123,3 +123,22 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
      * Successfully signed with v1, v2, v3 schemes.
      * Targeted live endpoint: `https://marble-handicrafts.netlify.app`.
 ================================================================================
+12. COMPLETE PRODUCT DETAIL & CART THEME UNIFICATION
+   - Diagnosed root causes of the half-white/half-dark theme inconsistency in ProductDetailActivity:
+     * Root RelativeLayout and ScrollView had static `@color/bg_obsidian` without runtime ID hooks.
+     * Price Card, Specifications Card, and Story/Care/Shipping Cards retained static dark backgrounds (`bg_card.xml`) or mismatched text colors.
+     * Variant selection chips used hardcoded dark shape drawable (`bg_variant_card_selected.xml` `#231B10`).
+     * Specifications table TextViews and Section Headers lacked dynamic light/dark palette updates.
+     * Top bar navigation icons (`ic_back`, `ic_cart`) had fixed light fills that became invisible on white surfaces in Light Mode.
+     * Bottom bar quantity controls container retained static dark background (`bg_btn_secondary`).
+   - Unified Theme Architecture (`com.sangtarash.app.config.ThemeManager`):
+     * Added `createSecondaryButtonDrawable(isDark, radius)` and `createVariantCardDrawable(isDark, isSelected, radius)`.
+     * Full light mode token mapping (warm alabaster marble `#F9F8F5`, linen white `#FFFFFF`, charcoal `#181714`, stone gray `#5C5A54`, antique bronze `#8C6D37`, and gold `#A87C28`).
+   - Refactored `ProductDetailActivity` (`ProductDetailActivity.java` & `activity_product_detail.xml`):
+     * Bound all root views, top bar, hero background, badges, headers, cards, specification rows, dividers, and quantity controls.
+     * Applied complete `applyTheme(isDark)` and live `onThemeChanged` observer propagation.
+     * Dynamically styled size option chips, active/inactive radio indicators, stock warnings, and thumbnail gallery cards.
+   - Refactored `CartActivity` (`CartActivity.java` & `activity_cart.xml`):
+     * Added full dynamic theming across cart root, top bar, count header, empty state icons, checkout bar, and acquisition inquiry dialog.
+   - Recompiled and verified release build: `bin/SangTarash-release.apk` (70.77 KB, exit code 0).
+================================================================================

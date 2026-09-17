@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_product_detail_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_obsidian">
@@ -48,6 +49,7 @@
             android:focusable="true">
 
             <ImageView
+                android:id="@+id/iv_detail_cart_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
@@ -175,8 +177,9 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
 
-                <!-- Price and Availability -->
+                <!-- Price and Availability Card -->
                 <LinearLayout
+                    android:id="@+id/ll_detail_price_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -192,6 +195,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_price_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Selected Variant Price"
@@ -221,6 +225,7 @@
 
                 <!-- Size & Variant Selection Header -->
                 <TextView
+                    android:id="@+id/tv_header_variant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -238,8 +243,9 @@
                     android:layout_marginTop="8dp"
                     android:orientation="vertical" />
 
-                <!-- Narrative / Description -->
+                <!-- Narrative / Description Header -->
                 <TextView
+                    android:id="@+id/tv_header_narrative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -260,6 +266,7 @@
 
                 <!-- Specifications Card -->
                 <LinearLayout
+                    android:id="@+id/ll_spec_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -268,6 +275,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_header_spec"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.08"
@@ -277,6 +285,7 @@
                         android:textStyle="bold" />
 
                     <View
+                        android:id="@+id/v_spec_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
@@ -348,6 +357,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_header_story"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.08"
@@ -377,6 +387,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_header_care"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.08"
@@ -406,6 +417,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_header_shipping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.08"
@@ -427,7 +439,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Sticky Bottom Bar: Variant summary, Quantity, Acquire Button -->
+    <!-- Sticky Bottom Bar: Quantity, Acquire Button -->
     <LinearLayout
         android:id="@+id/ll_bottom_bar"
         android:layout_width="match_parent"
@@ -444,6 +456,7 @@
 
         <!-- Quantity Controls -->
         <LinearLayout
+            android:id="@+id/ll_qty_container"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:background="@drawable/bg_btn_secondary"

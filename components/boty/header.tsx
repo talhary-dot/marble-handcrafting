@@ -17,15 +17,15 @@ export function Header() {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
-      <nav className="max-w-7xl mx-auto px-6 lg:px-8 rounded-2xl py-0 backdrop-blur-md bg-background/85 border border-white/60 shadow-[0_10px_40px_rgba(40,35,31,0.08)]">
-        <div className="flex items-center justify-between h-[70px]">
+    <header className="fixed top-0 left-0 right-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 rounded-2xl py-0 backdrop-blur-md bg-background/85 border border-white/60 shadow-[0_10px_40px_rgba(40,35,31,0.08)]">
+        <div className="flex items-center justify-between h-[64px] sm:h-[70px]">
           {/* Brand Logo on Start & Desktop Links */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3 sm:gap-8">
             {/* Mobile Menu Toggle */}
             <button 
               type="button" 
-              className="lg:hidden p-2 text-foreground/80 hover:text-foreground" 
+              className="lg:hidden p-1.5 sm:p-2 text-foreground/80 hover:text-foreground" 
               onClick={() => setIsMenuOpen(!isMenuOpen)} 
               aria-label="Toggle menu"
             >
@@ -34,10 +34,10 @@ export function Header() {
 
             {/* Brand Logo on Start */}
             <Link href="/" className="flex flex-col text-left group">
-              <span className="font-serif text-2xl sm:text-3xl tracking-wider text-foreground font-semibold leading-tight">
+              <span className="font-serif text-xl sm:text-2xl md:text-3xl tracking-wider text-foreground font-semibold leading-tight">
                 Sang Tarash
               </span>
-              <span className="block text-[9px] uppercase tracking-[0.3em] text-primary font-medium opacity-90 group-hover:text-primary/80 boty-transition">
+              <span className="block text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-primary font-medium opacity-90 group-hover:text-primary/80 boty-transition">
                 Marble Handicrafts
               </span>
             </Link>

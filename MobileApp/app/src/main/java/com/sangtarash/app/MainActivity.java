@@ -551,10 +551,18 @@ public class MainActivity extends Activity implements CartManager.CartListener, 
             tvTagline.setTextColor(ThemeManager.getTextSecondary(isDark));
 
             tvPrice.setText(product.getPriceDisplay());
+            tvPrice.setTextColor(ThemeManager.getGold(isDark));
+
+            if (btnInspect instanceof TextView) {
+                btnInspect.setBackground(ThemeManager.createSecondaryButtonDrawable(isDark, ThemeManager.dpToPx(this, 6)));
+                ((TextView) btnInspect).setTextColor(ThemeManager.getBronze(isDark));
+            }
 
             if (product.origin != null && !product.origin.isEmpty()) {
                 tvOrigin.setVisibility(View.VISIBLE);
                 tvOrigin.setText(product.origin);
+                tvOrigin.setBackground(ThemeManager.createChipDrawable(isDark, false, ThemeManager.dpToPx(this, 10)));
+                tvOrigin.setTextColor(ThemeManager.getTextSecondary(isDark));
             } else {
                 tvOrigin.setVisibility(View.GONE);
             }
@@ -562,6 +570,8 @@ public class MainActivity extends Activity implements CartManager.CartListener, 
             if (product.badge != null && !product.badge.isEmpty()) {
                 tvBadge.setVisibility(View.VISIBLE);
                 tvBadge.setText(product.badge);
+                tvBadge.setBackground(ThemeManager.createChipDrawable(isDark, true, ThemeManager.dpToPx(this, 10)));
+                tvBadge.setTextColor(ThemeManager.getBronze(isDark));
             } else {
                 tvBadge.setVisibility(View.GONE);
             }

@@ -2,6 +2,7 @@ package com.sangtarash.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,24 +10,37 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.sangtarash.app.config.ThemeManager;
 import com.sangtarash.app.model.CartItem;
 import com.sangtarash.app.net.ImageLoader;
 import com.sangtarash.app.storage.CartManager;
 import java.util.List;
 
-public class CartActivity extends Activity implements CartManager.CartListener, com.sangtarash.app.config.ThemeManager.ThemeListener {
+public class CartActivity extends Activity implements CartManager.CartListener, ThemeManager.ThemeListener {
 
+    private RelativeLayout mRlRoot;
+    private RelativeLayout mRlTopBar;
     private ImageView mBtnBack;
+    private TextView mTvTitleBar;
     private TextView mTvHeaderCount;
+
     private ScrollView mSvItems;
     private LinearLayout mLlItems;
+
     private LinearLayout mLlEmpty;
+    private ImageView mIvEmptyIcon;
+    private TextView mTvEmptyTitle;
+    private TextView mTvEmptySub;
     private Button mBtnBrowseCatalog;
+
     private LinearLayout mLlCheckoutBar;
+    private TextView mTvTotalLabel;
     private TextView mTvTotal;
+    private TextView mTvFreightNote;
     private Button mBtnCheckoutInquiry;
 
     @Override
@@ -37,9 +51,9 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
         initViews();
         setupListeners();
         CartManager.addListener(this);
-        com.sangtarash.app.config.ThemeManager.addListener(this);
+        ThemeManager.addListener(this);
 
-        applyTheme(com.sangtarash.app.config.ThemeManager.isDarkMode(this));
+        applyTheme(ThemeManager.isDarkMode(this));
         renderCart();
     }
 
@@ -47,7 +61,7 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
     protected void onDestroy() {
         super.onDestroy();
         CartManager.removeListener(this);
-        com.sangtarash.app.config.ThemeManager.removeListener(this);
+        ThemeManager.removeListener(this);
     }
 
     @Override
@@ -72,25 +86,44 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
     }
 
     private void applyTheme(boolean isDark) {
-        findViewById(android.R.id.content).setBackgroundColor(com.sangtarash.app.config.ThemeManager.getBgColor(isDark));
-        View topBar = findViewById(R.id.rl_cart_top_bar);
-        if (topBar != null) topBar.setBackgroundColor(com.sangtarash.app.config.ThemeManager.getSurfaceColor(isDark));
-        if (mLlCheckoutBar != null) mLlCheckoutBar.setBackgroundColor(com.sangtarash.app.config.ThemeManager.getSurfaceColor(isDark));
-        View emptyTitle = findViewById(R.id.tv_empty_title);
-        if (emptyTitle instanceof TextView) ((TextView) emptyTitle).setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
-        View emptySub = findViewById(R.id.tv_empty_sub);
-        if (emptySub instanceof TextView) ((TextView) emptySub).setTextColor(com.sangtarash.app.config.ThemeManager.getTextSecondary(isDark));
+        if (mRlRoot != null) mRlRoot.setBackgroundColor(ThemeManager.getBgColor(isDark));
+        if (mSvItems != null) mSvItems.setBackgroundColor(ThemeManager.getBgColor(isDark));
+
+        if (mRlTopBar != null) mRlTopBar.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
+        if (mBtnBack != null) mBtnBack.setColorFilter(ThemeManager.getTextPrimary(isDark));
+        if (mTvTitleBar != null) mTvTitleBar.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvHeaderCount != null) mTvHeaderCount.setTextColor(ThemeManager.getTextMuted(isDark));
+
+        if (mLlCheckoutBar != null) mLlCheckoutBar.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
+        if (mTvTotalLabel != null) mTvTotalLabel.setTextColor(ThemeManager.getTextSecondary(isDark));
+        if (mTvTotal != null) mTvTotal.setTextColor(ThemeManager.getGold(isDark));
+        if (mTvFreightNote != null) mTvFreightNote.setTextColor(ThemeManager.getTextMuted(isDark));
+
+        if (mTvEmptyTitle != null) mTvEmptyTitle.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvEmptySub != null) mTvEmptySub.setTextColor(ThemeManager.getTextSecondary(isDark));
+        if (mIvEmptyIcon != null) mIvEmptyIcon.setColorFilter(ThemeManager.getBronze(isDark));
     }
 
     private void initViews() {
+        mRlRoot = findViewById(R.id.rl_cart_root);
+        mRlTopBar = findViewById(R.id.rl_cart_top_bar);
         mBtnBack = findViewById(R.id.btn_cart_back);
+        mTvTitleBar = findViewById(R.id.tv_cart_title_bar);
         mTvHeaderCount = findViewById(R.id.tv_cart_count_header);
+
         mSvItems = findViewById(R.id.sv_cart_items);
         mLlItems = findViewById(R.id.ll_cart_items);
+
         mLlEmpty = findViewById(R.id.ll_cart_empty);
+        mIvEmptyIcon = findViewById(R.id.iv_cart_empty_icon);
+        mTvEmptyTitle = findViewById(R.id.tv_cart_empty_title);
+        mTvEmptySub = findViewById(R.id.tv_cart_empty_sub);
         mBtnBrowseCatalog = findViewById(R.id.btn_browse_catalog);
+
         mLlCheckoutBar = findViewById(R.id.ll_cart_checkout_bar);
+        mTvTotalLabel = findViewById(R.id.tv_cart_total_label);
         mTvTotal = findViewById(R.id.tv_cart_total);
+        mTvFreightNote = findViewById(R.id.tv_cart_freight_note);
         mBtnCheckoutInquiry = findViewById(R.id.btn_checkout_inquiry);
     }
 
@@ -139,12 +172,12 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
         mLlEmpty.setVisibility(View.GONE);
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        boolean isDark = com.sangtarash.app.config.ThemeManager.isDarkMode(this);
-        int cardRadius = com.sangtarash.app.config.ThemeManager.dpToPx(this, 8);
+        boolean isDark = ThemeManager.isDarkMode(this);
+        int cardRadius = ThemeManager.dpToPx(this, 8);
 
         for (final CartItem item : items) {
             View row = inflater.inflate(R.layout.item_cart_row, mLlItems, false);
-            row.setBackground(com.sangtarash.app.config.ThemeManager.createCardDrawable(isDark, cardRadius));
+            row.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
 
             ImageView ivThumb = row.findViewById(R.id.iv_cart_thumb);
             TextView tvName = row.findViewById(R.id.tv_cart_item_name);
@@ -156,19 +189,22 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
             TextView btnPlus = row.findViewById(R.id.btn_cart_plus);
 
             tvName.setText(item.productName);
-            tvName.setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
+            tvName.setTextColor(ThemeManager.getTextPrimary(isDark));
 
             tvVariant.setText(item.sizeName + " (" + item.dimensions + ")");
-            tvVariant.setTextColor(com.sangtarash.app.config.ThemeManager.getBronze(isDark));
+            tvVariant.setTextColor(ThemeManager.getBronze(isDark));
 
             tvUnitPrice.setText("$" + item.unitPrice + " each");
-            tvUnitPrice.setTextColor(com.sangtarash.app.config.ThemeManager.getTextMuted(isDark));
+            tvUnitPrice.setTextColor(ThemeManager.getTextMuted(isDark));
 
             tvSubtotal.setText("$" + item.getSubtotal());
-            tvSubtotal.setTextColor(com.sangtarash.app.config.ThemeManager.getGold(isDark));
+            tvSubtotal.setTextColor(ThemeManager.getGold(isDark));
 
             tvQty.setText(String.valueOf(item.quantity));
-            tvQty.setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
+            tvQty.setTextColor(ThemeManager.getTextPrimary(isDark));
+
+            btnMinus.setTextColor(ThemeManager.getBronze(isDark));
+            btnPlus.setTextColor(ThemeManager.getBronze(isDark));
 
             ImageLoader.getInstance().displayImage(this, item.featuredImage, ivThumb);
 
@@ -191,39 +227,42 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
     }
 
     private void showInquiryDialog() {
+        boolean isDark = ThemeManager.isDarkMode(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LinearLayout container = new LinearLayout(this);
         container.setOrientation(LinearLayout.VERTICAL);
         container.setPadding(48, 36, 48, 24);
-        container.setBackgroundColor(getResources().getColor(R.color.surface_card));
+        container.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
 
         TextView title = new TextView(this);
         title.setText("ACQUISITION INQUIRY");
         title.setTextSize(16);
-        title.setTextColor(getResources().getColor(R.color.bronze_primary));
-        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setTextColor(ThemeManager.getBronze(isDark));
+        title.setTypeface(null, Typeface.BOLD);
         container.addView(title);
 
         TextView sub = new TextView(this);
         sub.setText("Our master stonemasons will verify block selection and crating logistics for your order.");
         sub.setTextSize(12);
-        sub.setTextColor(getResources().getColor(R.color.text_muted));
+        sub.setTextColor(ThemeManager.getTextMuted(isDark));
         sub.setPadding(0, 8, 0, 24);
         container.addView(sub);
 
+        int inputRadius = ThemeManager.dpToPx(this, 6);
+
         final EditText etName = new EditText(this);
         etName.setHint("Your Full Name");
-        etName.setTextColor(getResources().getColor(R.color.text_primary));
-        etName.setHintTextColor(getResources().getColor(R.color.text_muted));
-        etName.setBackgroundResource(R.drawable.bg_search);
+        etName.setTextColor(ThemeManager.getTextPrimary(isDark));
+        etName.setHintTextColor(ThemeManager.getTextMuted(isDark));
+        etName.setBackground(ThemeManager.createSearchDrawable(isDark, inputRadius));
         etName.setPadding(24, 20, 24, 20);
         container.addView(etName);
 
         final EditText etContact = new EditText(this);
         etContact.setHint("Email or Phone Number");
-        etContact.setTextColor(getResources().getColor(R.color.text_primary));
-        etContact.setHintTextColor(getResources().getColor(R.color.text_muted));
-        etContact.setBackgroundResource(R.drawable.bg_search);
+        etContact.setTextColor(ThemeManager.getTextPrimary(isDark));
+        etContact.setHintTextColor(ThemeManager.getTextMuted(isDark));
+        etContact.setBackground(ThemeManager.createSearchDrawable(isDark, inputRadius));
         etContact.setPadding(24, 20, 24, 20);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -236,8 +275,8 @@ public class CartActivity extends Activity implements CartManager.CartListener, 
         Button btnSubmit = new Button(this);
         btnSubmit.setText("Confirm Acquisition Order");
         btnSubmit.setBackgroundResource(R.drawable.bg_btn_gold);
-        btnSubmit.setTextColor(getResources().getColor(R.color.bg_obsidian));
-        btnSubmit.setTypeface(null, android.graphics.Typeface.BOLD);
+        btnSubmit.setTextColor(0xFF0D0D0D);
+        btnSubmit.setTypeface(null, Typeface.BOLD);
         container.addView(btnSubmit);
 
         builder.setView(container);

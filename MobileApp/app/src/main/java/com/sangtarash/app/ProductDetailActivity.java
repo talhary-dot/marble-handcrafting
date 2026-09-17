@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.sangtarash.app.config.ThemeManager;
 import com.sangtarash.app.model.CartItem;
 import com.sangtarash.app.model.Product;
 import com.sangtarash.app.model.ProductSize;
@@ -20,25 +22,46 @@ import com.sangtarash.app.storage.CartManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDetailActivity extends Activity implements CartManager.CartListener, com.sangtarash.app.config.ThemeManager.ThemeListener {
+public class ProductDetailActivity extends Activity implements CartManager.CartListener, ThemeManager.ThemeListener {
 
+    // Root & Header
+    private RelativeLayout mRlRoot;
+    private RelativeLayout mRlTopBar;
     private ImageView mBtnBack;
+    private TextView mTvTitleBar;
     private RelativeLayout mBtnCart;
+    private ImageView mIvCartIcon;
     private TextView mTvCartBadge;
 
+    // ScrollView & Hero
+    private ScrollView mSvDetail;
     private ImageView mIvHero;
     private LinearLayout mLlThumbnails;
 
+    // Info & Badges
     private TextView mTvOrigin;
     private TextView mTvStoneBadge;
     private TextView mTvName;
     private TextView mTvTagline;
+
+    // Price Card
+    private LinearLayout mLlPriceCard;
+    private TextView mTvPriceLabel;
     private TextView mTvPrice;
     private TextView mTvStock;
 
+    // Variant Selection
+    private TextView mTvHeaderVariant;
     private LinearLayout mLlSizeOptions;
+
+    // Narrative
+    private TextView mTvHeaderNarrative;
     private TextView mTvDescription;
 
+    // Specifications
+    private LinearLayout mLlSpecCard;
+    private TextView mTvHeaderSpec;
+    private View mVSpecDivider;
     private TextView mTvSpecStone;
     private TextView mTvSpecOrigin;
     private TextView mTvSpecFinish;
@@ -46,18 +69,28 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
     private TextView mTvSpecWeight;
     private TextView mTvSpecSku;
 
+    // Artisan Story, Care, Shipping
     private LinearLayout mLlArtisanStoryCard;
+    private TextView mTvHeaderStory;
     private TextView mTvArtisanStory;
+
     private LinearLayout mLlCareCard;
+    private TextView mTvHeaderCare;
     private TextView mTvCare;
+
     private LinearLayout mLlShippingCard;
+    private TextView mTvHeaderShipping;
     private TextView mTvShipping;
 
+    // Sticky Bottom Bar
+    private LinearLayout mLlBottomBar;
+    private LinearLayout mLlQtyContainer;
     private TextView mBtnQtyMinus;
     private TextView mTvQty;
     private TextView mBtnQtyPlus;
     private Button mBtnAddToCart;
 
+    // State
     private Product mProduct;
     private ProductSize mSelectedSize;
     private int mQuantity = 1;
@@ -70,9 +103,9 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         initViews();
         setupListeners();
         CartManager.addListener(this);
-        com.sangtarash.app.config.ThemeManager.addListener(this);
+        ThemeManager.addListener(this);
 
-        applyTheme(com.sangtarash.app.config.ThemeManager.isDarkMode(this));
+        applyTheme(ThemeManager.isDarkMode(this));
 
         Object passedProduct = getIntent().getSerializableExtra("product_obj");
         String passedId = getIntent().getStringExtra("product_id");
@@ -97,7 +130,7 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
     protected void onDestroy() {
         super.onDestroy();
         CartManager.removeListener(this);
-        com.sangtarash.app.config.ThemeManager.removeListener(this);
+        ThemeManager.removeListener(this);
     }
 
     @Override
@@ -111,24 +144,91 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
     }
 
     private void applyTheme(boolean isDark) {
-        findViewById(android.R.id.content).setBackgroundColor(com.sangtarash.app.config.ThemeManager.getBgColor(isDark));
-        View topBar = findViewById(R.id.rl_top_bar);
-        if (topBar != null) topBar.setBackgroundColor(com.sangtarash.app.config.ThemeManager.getSurfaceColor(isDark));
-        View bottomBar = findViewById(R.id.ll_bottom_bar);
-        if (bottomBar != null) bottomBar.setBackgroundColor(com.sangtarash.app.config.ThemeManager.getSurfaceColor(isDark));
+        int cardRadius = ThemeManager.dpToPx(this, 8);
+        int badgeRadius = ThemeManager.dpToPx(this, 12);
+        int qtyRadius = ThemeManager.dpToPx(this, 6);
 
-        if (mTvName != null) mTvName.setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
-        if (mTvTagline != null) mTvTagline.setTextColor(com.sangtarash.app.config.ThemeManager.getTextSecondary(isDark));
-        if (mTvDescription != null) mTvDescription.setTextColor(com.sangtarash.app.config.ThemeManager.getTextSecondary(isDark));
-        if (mTvQty != null) mTvQty.setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
+        // Root Background
+        if (mRlRoot != null) mRlRoot.setBackgroundColor(ThemeManager.getBgColor(isDark));
+        if (mSvDetail != null) mSvDetail.setBackgroundColor(ThemeManager.getBgColor(isDark));
 
-        int cardRadius = com.sangtarash.app.config.ThemeManager.dpToPx(this, 8);
-        if (mLlArtisanStoryCard != null) mLlArtisanStoryCard.setBackground(com.sangtarash.app.config.ThemeManager.createCardDrawable(isDark, cardRadius));
-        if (mLlCareCard != null) mLlCareCard.setBackground(com.sangtarash.app.config.ThemeManager.createCardDrawable(isDark, cardRadius));
-        if (mLlShippingCard != null) mLlShippingCard.setBackground(com.sangtarash.app.config.ThemeManager.createCardDrawable(isDark, cardRadius));
+        // Top Bar
+        if (mRlTopBar != null) mRlTopBar.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
+        if (mBtnBack != null) mBtnBack.setColorFilter(ThemeManager.getTextPrimary(isDark));
+        if (mTvTitleBar != null) mTvTitleBar.setTextColor(ThemeManager.getBronze(isDark));
+        if (mIvCartIcon != null) mIvCartIcon.setColorFilter(ThemeManager.getTextPrimary(isDark));
 
+        // Hero Image
+        if (mIvHero != null) mIvHero.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
+
+        // Badges & Product Titles
+        if (mTvOrigin != null) {
+            mTvOrigin.setBackground(ThemeManager.createChipDrawable(isDark, true, badgeRadius));
+            mTvOrigin.setTextColor(ThemeManager.getBronze(isDark));
+        }
+        if (mTvStoneBadge != null) {
+            mTvStoneBadge.setBackground(ThemeManager.createChipDrawable(isDark, false, badgeRadius));
+            mTvStoneBadge.setTextColor(ThemeManager.getTextSecondary(isDark));
+        }
+        if (mTvName != null) mTvName.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvTagline != null) mTvTagline.setTextColor(ThemeManager.getTextSecondary(isDark));
+
+        // Price Card
+        if (mLlPriceCard != null) mLlPriceCard.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
+        if (mTvPriceLabel != null) mTvPriceLabel.setTextColor(ThemeManager.getTextMuted(isDark));
+        if (mTvPrice != null) mTvPrice.setTextColor(ThemeManager.getGold(isDark));
+
+        // Section Headers
+        if (mTvHeaderVariant != null) mTvHeaderVariant.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvHeaderNarrative != null) mTvHeaderNarrative.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvDescription != null) mTvDescription.setTextColor(ThemeManager.getTextSecondary(isDark));
+
+        // Specifications Card
+        if (mLlSpecCard != null) mLlSpecCard.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
+        if (mTvHeaderSpec != null) mTvHeaderSpec.setTextColor(ThemeManager.getBronze(isDark));
+        if (mVSpecDivider != null) mVSpecDivider.setBackgroundColor(ThemeManager.getBorderColor(isDark));
+        if (mTvSpecStone != null) mTvSpecStone.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvSpecOrigin != null) mTvSpecOrigin.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvSpecFinish != null) mTvSpecFinish.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvSpecDimensions != null) mTvSpecDimensions.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvSpecWeight != null) mTvSpecWeight.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mTvSpecSku != null) mTvSpecSku.setTextColor(ThemeManager.getTextMuted(isDark));
+
+        // Artisan Story, Care, Shipping Cards
+        if (mLlArtisanStoryCard != null) mLlArtisanStoryCard.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
+        if (mTvHeaderStory != null) mTvHeaderStory.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvArtisanStory != null) mTvArtisanStory.setTextColor(ThemeManager.getTextSecondary(isDark));
+
+        if (mLlCareCard != null) mLlCareCard.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
+        if (mTvHeaderCare != null) mTvHeaderCare.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvCare != null) mTvCare.setTextColor(ThemeManager.getTextSecondary(isDark));
+
+        if (mLlShippingCard != null) mLlShippingCard.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
+        if (mTvHeaderShipping != null) mTvHeaderShipping.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvShipping != null) mTvShipping.setTextColor(ThemeManager.getTextSecondary(isDark));
+
+        // Bottom Bar & Quantity Selector
+        if (mLlBottomBar != null) mLlBottomBar.setBackgroundColor(ThemeManager.getSurfaceColor(isDark));
+        if (mLlQtyContainer != null) mLlQtyContainer.setBackground(ThemeManager.createSecondaryButtonDrawable(isDark, qtyRadius));
+        if (mBtnQtyMinus != null) mBtnQtyMinus.setTextColor(ThemeManager.getBronze(isDark));
+        if (mBtnQtyPlus != null) mBtnQtyPlus.setTextColor(ThemeManager.getBronze(isDark));
+        if (mTvQty != null) mTvQty.setTextColor(ThemeManager.getTextPrimary(isDark));
+
+        // Re-render dynamic list items
         if (mProduct != null) {
             renderSizeOptions();
+            if (mProduct.gallery != null) {
+                List<String> allImages = new ArrayList<>();
+                if (mProduct.featuredImage != null && !mProduct.featuredImage.isEmpty()) {
+                    allImages.add(mProduct.featuredImage);
+                }
+                for (String g : mProduct.gallery) {
+                    if (!allImages.contains(g)) {
+                        allImages.add(g);
+                    }
+                }
+                setupGallery(allImages);
+            }
         }
     }
 
@@ -143,23 +243,44 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
     }
 
     private void initViews() {
+        // Root & Top Bar
+        mRlRoot = findViewById(R.id.rl_product_detail_root);
+        mRlTopBar = findViewById(R.id.rl_top_bar);
         mBtnBack = findViewById(R.id.btn_back);
+        mTvTitleBar = findViewById(R.id.tv_detail_title_bar);
         mBtnCart = findViewById(R.id.btn_detail_cart);
+        mIvCartIcon = findViewById(R.id.iv_detail_cart_icon);
         mTvCartBadge = findViewById(R.id.tv_detail_cart_badge);
 
+        // Scrollable content & Hero
+        mSvDetail = findViewById(R.id.sv_detail);
         mIvHero = findViewById(R.id.iv_detail_hero);
         mLlThumbnails = findViewById(R.id.ll_thumbnails);
 
+        // Badges & Titles
         mTvOrigin = findViewById(R.id.tv_detail_origin);
         mTvStoneBadge = findViewById(R.id.tv_detail_stone_badge);
         mTvName = findViewById(R.id.tv_detail_name);
         mTvTagline = findViewById(R.id.tv_detail_tagline);
+
+        // Price Card
+        mLlPriceCard = findViewById(R.id.ll_detail_price_card);
+        mTvPriceLabel = findViewById(R.id.tv_price_label);
         mTvPrice = findViewById(R.id.tv_detail_price);
         mTvStock = findViewById(R.id.tv_detail_stock);
 
+        // Variant Selection
+        mTvHeaderVariant = findViewById(R.id.tv_header_variant);
         mLlSizeOptions = findViewById(R.id.ll_size_options);
+
+        // Narrative
+        mTvHeaderNarrative = findViewById(R.id.tv_header_narrative);
         mTvDescription = findViewById(R.id.tv_detail_description);
 
+        // Specifications
+        mLlSpecCard = findViewById(R.id.ll_spec_card);
+        mTvHeaderSpec = findViewById(R.id.tv_header_spec);
+        mVSpecDivider = findViewById(R.id.v_spec_divider);
         mTvSpecStone = findViewById(R.id.tv_spec_stone);
         mTvSpecOrigin = findViewById(R.id.tv_spec_origin);
         mTvSpecFinish = findViewById(R.id.tv_spec_finish);
@@ -167,13 +288,22 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         mTvSpecWeight = findViewById(R.id.tv_spec_weight);
         mTvSpecSku = findViewById(R.id.tv_spec_sku);
 
+        // Artisan Story, Care, Shipping
         mLlArtisanStoryCard = findViewById(R.id.ll_artisan_story_card);
+        mTvHeaderStory = findViewById(R.id.tv_header_story);
         mTvArtisanStory = findViewById(R.id.tv_detail_artisan_story);
+
         mLlCareCard = findViewById(R.id.ll_care_card);
+        mTvHeaderCare = findViewById(R.id.tv_header_care);
         mTvCare = findViewById(R.id.tv_detail_care);
+
         mLlShippingCard = findViewById(R.id.ll_shipping_card);
+        mTvHeaderShipping = findViewById(R.id.tv_header_shipping);
         mTvShipping = findViewById(R.id.tv_detail_shipping);
 
+        // Sticky Bottom Bar
+        mLlBottomBar = findViewById(R.id.ll_bottom_bar);
+        mLlQtyContainer = findViewById(R.id.ll_qty_container);
         mBtnQtyMinus = findViewById(R.id.btn_qty_minus);
         mTvQty = findViewById(R.id.tv_qty);
         mBtnQtyPlus = findViewById(R.id.btn_qty_plus);
@@ -264,7 +394,7 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         mTvStoneBadge.setText(mProduct.stoneType);
 
         // Strip HTML if description contains tags
-        String cleanDesc = mProduct.description.replaceAll("<[^>]*>", "").trim();
+        String cleanDesc = mProduct.description != null ? mProduct.description.replaceAll("<[^>]*>", "").trim() : "";
         mTvDescription.setText(cleanDesc);
 
         // Hero image
@@ -275,18 +405,20 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         if (mProduct.featuredImage != null && !mProduct.featuredImage.isEmpty()) {
             allImages.add(mProduct.featuredImage);
         }
-        for (String g : mProduct.gallery) {
-            if (!allImages.contains(g)) {
-                allImages.add(g);
+        if (mProduct.gallery != null) {
+            for (String g : mProduct.gallery) {
+                if (!allImages.contains(g)) {
+                    allImages.add(g);
+                }
             }
         }
 
         setupGallery(allImages);
 
         // Specifications
-        mTvSpecStone.setText("Stone Variety: " + mProduct.stoneType);
-        mTvSpecOrigin.setText("Geological Origin: " + mProduct.origin);
-        mTvSpecFinish.setText("Surface Finish: " + mProduct.finish);
+        mTvSpecStone.setText("Stone Variety: " + (mProduct.stoneType != null ? mProduct.stoneType : "Natural Stone"));
+        mTvSpecOrigin.setText("Geological Origin: " + (mProduct.origin != null ? mProduct.origin : "Artisan Quarry"));
+        mTvSpecFinish.setText("Surface Finish: " + (mProduct.finish != null ? mProduct.finish : "Honed Matte"));
 
         // Artisan Story
         if (mProduct.artisanStory != null && !mProduct.artisanStory.isEmpty()) {
@@ -320,18 +452,25 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
 
     private void setupGallery(final List<String> images) {
         mLlThumbnails.removeAllViews();
-        if (images.size() <= 1) {
+        if (images == null || images.size() <= 1) {
             return;
         }
 
+        boolean isDark = ThemeManager.isDarkMode(this);
+        int cardRadius = ThemeManager.dpToPx(this, 6);
+
         for (final String imgUrl : images) {
             final ImageView thumb = new ImageView(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(130, 130);
-            lp.setMarginEnd(16);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ThemeManager.dpToPx(this, 56),
+                    ThemeManager.dpToPx(this, 56)
+            );
+            lp.setMarginEnd(ThemeManager.dpToPx(this, 10));
             thumb.setLayoutParams(lp);
-            thumb.setBackgroundResource(R.drawable.bg_card);
+            thumb.setBackground(ThemeManager.createCardDrawable(isDark, cardRadius));
             thumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            thumb.setPadding(4, 4, 4, 4);
+            int pad = ThemeManager.dpToPx(this, 2);
+            thumb.setPadding(pad, pad, pad, pad);
 
             ImageLoader.getInstance().displayImage(this, imgUrl, thumb);
 
@@ -348,9 +487,13 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
 
     private void renderSizeOptions() {
         mLlSizeOptions.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(this);
+        if (mProduct == null || mProduct.sizes == null) return;
 
-        boolean isDark = com.sangtarash.app.config.ThemeManager.isDarkMode(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        boolean isDark = ThemeManager.isDarkMode(this);
+        int cardRadius = ThemeManager.dpToPx(this, 8);
+        int badgeRadius = ThemeManager.dpToPx(this, 10);
+
         for (final ProductSize size : mProduct.sizes) {
             View card = inflater.inflate(R.layout.item_size_chip, mLlSizeOptions, false);
 
@@ -363,13 +506,14 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
             TextView tvPrice = card.findViewById(R.id.tv_size_price);
 
             tvName.setText(size.sizeName);
-            tvName.setTextColor(com.sangtarash.app.config.ThemeManager.getTextPrimary(isDark));
+            tvName.setTextColor(ThemeManager.getTextPrimary(isDark));
             tvSpecs.setText(size.dimensions + " • " + size.weight);
-            tvSpecs.setTextColor(com.sangtarash.app.config.ThemeManager.getTextSecondary(isDark));
+            tvSpecs.setTextColor(ThemeManager.getTextSecondary(isDark));
 
             if (size.sku != null && !size.sku.isEmpty()) {
                 tvSku.setVisibility(View.VISIBLE);
                 tvSku.setText("SKU: " + size.sku);
+                tvSku.setTextColor(ThemeManager.getTextMuted(isDark));
             } else {
                 tvSku.setVisibility(View.GONE);
             }
@@ -378,35 +522,40 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
                 tvStockBadge.setVisibility(View.VISIBLE);
                 tvStockBadge.setText("Only " + size.stock + " left");
                 tvStockBadge.setTextColor(getResources().getColor(R.color.status_lowstock));
+                tvStockBadge.setBackground(ThemeManager.createChipDrawable(isDark, true, badgeRadius));
             } else if (size.stock > 3) {
                 tvStockBadge.setVisibility(View.VISIBLE);
                 tvStockBadge.setText(size.stock + " in stock");
                 tvStockBadge.setTextColor(getResources().getColor(R.color.status_instock));
+                tvStockBadge.setBackground(ThemeManager.createChipDrawable(isDark, false, badgeRadius));
             } else {
                 tvStockBadge.setVisibility(View.VISIBLE);
                 tvStockBadge.setText("Sold Out");
-                tvStockBadge.setTextColor(getResources().getColor(R.color.text_muted));
+                tvStockBadge.setTextColor(ThemeManager.getTextMuted(isDark));
+                tvStockBadge.setBackground(ThemeManager.createChipDrawable(isDark, false, badgeRadius));
             }
 
             if (size.originalPrice != null && size.originalPrice > size.price) {
                 tvOriginalPrice.setVisibility(View.VISIBLE);
                 tvOriginalPrice.setText("$" + size.originalPrice);
+                tvOriginalPrice.setTextColor(ThemeManager.getTextMuted(isDark));
                 tvOriginalPrice.setPaintFlags(tvOriginalPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 tvOriginalPrice.setVisibility(View.GONE);
             }
 
             tvPrice.setText("$" + size.price);
-            tvPrice.setTextColor(com.sangtarash.app.config.ThemeManager.getGold(isDark));
+            tvPrice.setTextColor(ThemeManager.getGold(isDark));
 
             boolean isSelected = (mSelectedSize != null && mSelectedSize.id.equals(size.id));
+            card.setBackground(ThemeManager.createVariantCardDrawable(isDark, isSelected, cardRadius));
+
             if (isSelected) {
-                card.setBackgroundResource(R.drawable.bg_variant_card_selected);
                 ivRadio.setImageResource(R.drawable.ic_radio_selected);
+                ivRadio.clearColorFilter();
             } else {
-                int cardRadius = com.sangtarash.app.config.ThemeManager.dpToPx(this, 8);
-                card.setBackground(com.sangtarash.app.config.ThemeManager.createCardDrawable(isDark, cardRadius));
                 ivRadio.setImageResource(R.drawable.ic_radio_unselected);
+                ivRadio.setColorFilter(ThemeManager.getTextMuted(isDark));
             }
 
             card.setOnClickListener(new View.OnClickListener() {
