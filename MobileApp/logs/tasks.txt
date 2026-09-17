@@ -110,8 +110,16 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
      * Section 2: "The Atelier" — Heritage & Stone Guide showcase detailing centuries of metamorphic stonemasonry craft, geological varieties (Carrara White Marble, Roman Travertine, Calacatta Monolith Stone), and reinforced timber crate suspension logistics.
      * Section 3: "Acquisitions" (Tray / Cart) — Integrated full-screen acquisition tray with live count badge (tv_nav_cart_badge), quantity modifiers, subtotal updates, empty state with collection navigation, and direct Acquisition Order Inquiry dialog.
      * Production bottom navigation bar with active bronze-gold highlighting, typography weighting, and vector iconography.
-   - Build Verification & Performance:
-     * Recompiled through zero-Gradle 7-step pipeline (build.ps1).
-     * Binary size: 66.77 KB release APK.
-     * Fully aligned, v1/v2/v3 cryptographically signed, zero compiler warnings/errors.
+================================================================================
+11. PRODUCTION NETLIFY BACKEND DEPLOYMENT & APK RELEASE BUILD
+   - Configured production target endpoint in `MobileApp/.env`:
+     * `BACKEND_URL`: `https://marble-handicrafts.netlify.app`
+     * `APP_ENVIRONMENT`: `production`
+     * `REQUEST_TIMEOUT_MS`: `10000`
+   - Zero hardcoded secrets in code (parsed directly by `build.ps1` into `EnvConfig.java`).
+   - Recompiled release APK via 7-step zero-Gradle pipeline:
+     * OpenJDK 17 `javac` + Android SDK 34 `android.jar` + AAPT2 + Google R8 + `zipalign` + `apksigner`.
+     * Binary size: **66.77 KB** (`bin/SangTarash-release.apk`).
+     * Successfully signed with v1, v2, v3 schemes.
+     * Targeted live endpoint: `https://marble-handicrafts.netlify.app`.
 ================================================================================

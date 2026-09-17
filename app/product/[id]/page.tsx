@@ -39,10 +39,10 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     }
   }
 
-  const baseTitle = product.seoTitle || `${product.name} | Sang Tarash Marble Handicrafts`
+  const baseTitle = (product as any).seoTitle || `${product.name} | Sang Tarash Marble Handicrafts`
   const title = sizeParam ? `${product.name} (${sizeParam}) | Sang Tarash` : baseTitle
-  const cleanDescription = product.seoDescription || product.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160)
-  const canonicalUrl = `https://sangtarash.com/product/${product.slug || product.id}`
+  const cleanDescription = (product as any).seoDescription || (product.description ? product.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) : "Handcrafted natural marble and architectural stoneware by Sang Tarash.")
+  const canonicalUrl = `https://sangtarash.com/product/${(product as any).slug || product.id}`
 
   return {
     title,
@@ -53,12 +53,12 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     },
     openGraph: {
       title,
-      description,
+      description: cleanDescription,
       url: canonicalUrl,
       siteName: "Sang Tarash Atelier",
       images: [
         {
-          url: product.featuredImage || (product as any).image,
+          url: (product as any).featuredImage || (product as any).image,
           width: 1200,
           height: 900,
           alt: product.name,
@@ -69,8 +69,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     twitter: {
       card: "summary_large_image",
       title,
-      description,
-      images: [product.featuredImage || (product as any).image],
+      description: cleanDescription,
+      images: [(product as any).featuredImage || (product as any).image],
     }
   }
 }
