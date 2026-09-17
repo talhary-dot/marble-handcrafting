@@ -1,0 +1,335 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Marble Handicrafts — Ivory, Travertine, Warm Vein, and Burnished Copper Bronze Theme */
+:root {
+  /* Brand Colors: Ivory, Travertine, Warm Sand, Espresso, and Burnished Copper Bronze */
+  --background: #F8F5F0; /* Warm Alabaster */
+  --foreground: #28231F; /* Deep Espresso Charcoal */
+  --card: #EFE9E0; /* Warm Travertine Sand */
+  --card-foreground: #28231F;
+  --popover: #F8F5F0;
+  --popover-foreground: #28231F;
+  --primary: #9E5632; /* Rich Burnished Copper Bronze */
+  --primary-foreground: #FDFBFA;
+  --secondary: #D8CBBF; /* Travertine Limestone */
+  --secondary-foreground: #28231F;
+  --muted: #EBE4DA; /* Honed Sand */
+  --muted-foreground: #6F665E;
+  --accent: #C47952; /* Luminous Brushed Copper */
+  --accent-foreground: #FFFFFF;
+  --destructive: #A3483E;
+  --destructive-foreground: #FDFBFA;
+  --border: #D9CFC4;
+  --input: #EBE4DA;
+  --ring: #9E5632;
+  --chart-1: #9E5632;
+  --chart-2: #C47952;
+  --chart-3: #D8CBBF;
+  --chart-4: #7D4021;
+  --chart-5: #6F665E;
+  --radius: 1rem;
+  --sidebar: #EFE9E0;
+  --sidebar-foreground: #28231F;
+  --sidebar-primary: #9E5632;
+  --sidebar-primary-foreground: #FDFBFA;
+  --sidebar-accent: #D8CBBF;
+  --sidebar-accent-foreground: #28231F;
+  --sidebar-border: #D9CFC4;
+  --sidebar-ring: #9E5632;
+}
+
+.dark {
+  --background: #1C1816;
+  --foreground: #F8F5F0;
+  --card: #28221E;
+  --card-foreground: #F8F5F0;
+  --popover: #1C1816;
+  --popover-foreground: #F8F5F0;
+  --primary: #DE8F68; /* Radiant Copper Bronze for Dark Mode */
+  --primary-foreground: #1C1816;
+  --secondary: #3B332E;
+  --secondary-foreground: #F8F5F0;
+  --muted: #28221E;
+  --muted-foreground: #B5A99E;
+  --accent: #47362E;
+  --accent-foreground: #F8F5F0;
+  --destructive: #B85044;
+  --destructive-foreground: #F8F5F0;
+  --border: #3B332E;
+  --input: #28221E;
+  --ring: #DE8F68;
+  --chart-1: #DE8F68;
+  --chart-2: #C47952;
+  --chart-3: #6F665E;
+  --chart-4: #9E5632;
+  --chart-5: #D8CBBF;
+  --sidebar: #28221E;
+  --sidebar-foreground: #F8F5F0;
+  --sidebar-primary: #DE8F68;
+  --sidebar-primary-foreground: #1C1816;
+  --sidebar-accent: #3B332E;
+  --sidebar-accent-foreground: #F8F5F0;
+  --sidebar-border: #3B332E;
+  --sidebar-ring: #DE8F68;
+}
+
+@theme inline {
+  --font-sans: 'DM Sans', 'DM Sans Fallback', sans-serif;
+  --font-serif: 'Playfair Display', 'Playfair Display Fallback', serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 16px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom soft shadow utility */
+.boty-shadow {
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+}
+
+/* Smooth transitions */
+.boty-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Blur in animation */
+@keyframes blur-in {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.animate-blur-in {
+  animation: blur-in 0.8s ease-out;
+}
+
+/* Scale fade in animation */
+@keyframes scale-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-fade-in {
+  animation: scale-fade-in 0.6s ease-out;
+}
+
+/* Sang Tarash Rich Text Content & Story Prose */
+.product-rich-description,
+.tiptap {
+  color: var(--foreground);
+  line-height: 1.75;
+}
+
+.product-rich-description h1,
+.tiptap h1 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+}
+
+.product-rich-description h2,
+.tiptap h2 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.65rem;
+  color: var(--foreground);
+  border-bottom: 1px solid rgba(158, 86, 50, 0.15);
+  padding-bottom: 0.35rem;
+}
+
+.product-rich-description h3,
+.tiptap h3 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.product-rich-description h4,
+.tiptap h4 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.product-rich-description p,
+.tiptap p {
+  margin-bottom: 1rem;
+  color: rgba(var(--foreground-rgb, 40, 35, 30), 0.88);
+}
+
+.product-rich-description blockquote,
+.tiptap blockquote {
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  background-color: rgba(158, 86, 50, 0.05);
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: var(--muted-foreground);
+}
+
+.product-rich-description ul,
+.tiptap ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.product-rich-description ol,
+.tiptap ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.product-rich-description li,
+.tiptap li {
+  margin-bottom: 0.35rem;
+}
+
+.product-rich-description a,
+.tiptap a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.product-rich-description a:hover,
+.tiptap a:hover {
+  opacity: 0.8;
+}
+
+.product-rich-description img,
+.tiptap img {
+  border-radius: 1rem;
+  border: 1px solid rgba(158, 86, 50, 0.2);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
+  margin: 1.5rem auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-rich-description hr,
+.tiptap hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.product-rich-description code,
+.tiptap code {
+  font-family: monospace;
+  background-color: var(--muted);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.35rem;
+  font-size: 0.85em;
+}
+
+.product-rich-description pre,
+.tiptap pre {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.875rem;
+  margin: 1.25rem 0;
+}
+
+/* TipTap Editor Specific Utilities */
+.tiptap:focus {
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  height: 0;
+  opacity: 0.6;
+}
+

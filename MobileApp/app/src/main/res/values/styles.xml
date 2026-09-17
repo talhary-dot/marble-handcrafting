@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SangTarash" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/bg_obsidian</item>
+        <item name="android:statusBarColor">@color/bg_obsidian</item>
+        <item name="android:navigationBarColor">@color/bg_obsidian</item>
+        <item name="android:colorPrimary">@color/bronze_primary</item>
+        <item name="android:colorPrimaryDark">@color/bg_obsidian</item>
+        <item name="android:colorAccent">@color/gold_accent</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

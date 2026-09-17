@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Sang Tarash Luxury Stone Palette -->
+    <color name="bg_obsidian">#0D0D0D</color>
+    <color name="surface_stone">#161616</color>
+    <color name="surface_card">#1E1E1E</color>
+    <color name="border_card">#2D2D2D</color>
+    <color name="border_focus">#C5A059</color>
+
+    <color name="bronze_primary">#C5A059</color>
+    <color name="bronze_dark">#8C6D37</color>
+    <color name="gold_accent">#D4AF37</color>
+    <color name="gold_light">#EAD7A4</color>
+
+    <color name="text_primary">#F5F5F0</color>
+    <color name="text_secondary">#A0A09B</color>
+    <color name="text_muted">#686862</color>
+
+    <color name="badge_bg">#2A2215</color>
+    <color name="badge_text">#D4AF37</color>
+
+    <color name="chip_inactive_bg">#1A1A1A</color>
+    <color name="chip_inactive_border">#2C2C2C</color>
+    <color name="chip_active_bg">#2D2416</color>
+    <color name="chip_active_border">#C5A059</color>
+
+    <color name="status_instock">#4E9F6E</color>
+    <color name="status_lowstock">#D48A37</color>
+
+    <color name="black_translucent">#99000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

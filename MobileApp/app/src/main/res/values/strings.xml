@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sang Tarash</string>
+    <string name="atelier_subtitle">Generational Stonemasons • Natural Stone</string>
+    <string name="search_hint">Search stone, origin, or piece…</string>
+    <string name="cart">Cart</string>
+    <string name="cart_empty">Your acquisition tray is empty</string>
+    <string name="cart_empty_sub">Select an architectural stonework piece from the catalog to begin.</string>
+    <string name="add_to_cart">Acquire Piece</string>
+    <string name="added_to_cart">Piece added to acquisition tray</string>
+    <string name="order_inquiry">Submit Acquisition Inquiry</string>
+    <string name="specifications">Stone Specifications</string>
+    <string name="artisan_story">Artisan Story</string>
+    <string name="care_instructions">Care Instructions</string>
+    <string name="shipping_handling">Packaging &amp; Crate Shipping</string>
+    <string name="select_variant">Select Stone Variant &amp; Size</string>
+    <string name="in_stock">In Stock — Ready to Crate</string>
+    <string name="retry">Retry Connection</string>
+    <string name="connection_error">Could not connect to atelier server.</string>
+    <string name="server_settings">Endpoint Settings</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+</resources>

@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Local database
+.pglite/
+.pglite*
+
+# Environment files and secrets
+.env
+.env.*
+.env.local
+MobileApp/.env
+MobileApp/.env.*
+!.env.example
+!MobileApp/.env.example
+
+# Mobile App build artifacts & binaries
+MobileApp/build/
+MobileApp/bin/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Android keystores & signing credentials
+*.keystore
+*.jks
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.iml
+local.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vercel & TypeScript
+.vercel
+*.tsbuildinfo
+next-env.d.ts

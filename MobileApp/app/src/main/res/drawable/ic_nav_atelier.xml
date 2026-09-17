@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Classical Atelier Temple / Pillar Monument -->
+    <path
+        android:fillColor="#C5A059"
+        android:pathData="M12,1L2,6v2h20V6L12,1zM4,9v10H2v2h20v-2h-2V9H4zM6,19V9h2v10H6zM11,19V9h2v10H11zM16,19V9h2v10H16z" />
+</vector>

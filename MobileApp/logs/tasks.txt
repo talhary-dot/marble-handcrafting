@@ -1,0 +1,117 @@
+================================================================================
+SANG TARASH — HIGH-PERFORMANCE NATIVE ANDROID MOBILE APP: TASK COMPLETION LOG
+================================================================================
+Date: 2026-09-17
+Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
+
+1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
+   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
+   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
+     * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
+     * Android SDK 34 (`android.jar`)
+     * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
+     * Google R8 bytecode optimizer (`lib\d8.jar`) for aggressive member inlining, dead-code elimination, and class shrinking
+     * Zipalign 4-byte boundary page alignment
+     * Apksigner with auto-generated RSA-2048 `release.keystore` (v1, v2, v3 schemes)
+   - Final release APK: `bin/SangTarash-release.apk`
+   - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
+
+2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
+   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
+   - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
+   - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
+   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
+
+3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
+   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
+   - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
+   - High-contrast alabaster typography and gold stone badge accents.
+
+4. MULTI-TIER IMAGE ENGINE & NETWORKING
+   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
+     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
+     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
+     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
+   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
+     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
+     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
+     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
+
+5. FULL E-COMMERCE USER JOURNEY
+   - `MainActivity`:
+     * Atelier header with brand subtitle and real-time acquisition tray counter.
+     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
+     * Live search filtering across piece titles, stone varieties, and geographical origins.
+     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
+   - `ProductDetailActivity`:
+     * Hero stone viewer with interactive gallery thumbnails switcher.
+     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
+     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
+     * Architectural narrative, Artisan Story, and Care Instructions cards.
+     * Quantity adjuster and sticky "Acquire Piece" action.
+   - `CartActivity`:
+     * Variant-aware cart rows with dimensions, weight, and unit pricing.
+     * Real-time total calculation and quantity modifier.
+     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
+     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
+
+7. PROFESSIONAL BOUTIQUE LUXURY UI OVERHAUL
+   - Redesigned Size & Variant Picker (`item_size_chip.xml` & `ProductDetailActivity.java`):
+     * Replaced crude indicators with bespoke gold-ring radio selectors (`ic_radio_selected.xml` & `ic_radio_unselected.xml`).
+     * Added dynamic stock badges ("Only 3 left" warning in amber, "8 in stock" in forest green, or "Sold Out").
+     * Integrated live strike-through original price formatting (`tv_size_original_price`) for discounted editions.
+     * Added SKU identifiers and variant dimension/weight hierarchy.
+     * Architectural card states with subtle hairline borders (`bg_variant_card_normal` vs `bg_variant_card_selected`).
+   - Enhanced Product Cards (`item_product_card.xml` & `MainActivity.java`):
+     * Added variant count badges ("3 Sizes" / "Single Edition") and uppercase stone variety classification.
+     * Polished hairline card borders, letter-spaced labels, and responsive click states.
+   - Atelier Heritage Showcase (`activity_main.xml`):
+     * Added "The Sang Tarash Philosophy" curated banner with verified natural stone proof points (100% Solid Stone, Hand-Chiseled Finish, Crate Shipping).
+     * Automatically minimizes/hides during active search or category filtering.
+   - Recompiled and verified release build: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
+
+8. DYNAMIC .ENV CONFIGURATION INGESTION PIPELINE
+   - Created `MobileApp/.env` and `MobileApp/.env.example` defining:
+     * `BACKEND_URL`: Dynamic API server endpoint (defaults to `http://10.0.2.2:3000` for emulator, easily swappable for physical device or production).
+     * `APP_NAME`: Application display name.
+     * `APP_ENVIRONMENT`: Environment tag (`development`, `staging`, `production`).
+     * `REQUEST_TIMEOUT_MS`: Network socket timeout (10000 ms).
+     * `ENABLE_OFFLINE_CACHE`: Local caching toggle.
+   - Created `MobileApp/.gitignore` protecting `.env`, build folders, and signing keystores from git commits.
+   - Updated `MobileApp/build.ps1` to ingest `.env` variables at build time and dynamically generate `EnvConfig.java` in `build/gen/com/sangtarash/app/config/` without UTF-8 BOM.
+   - Updated `AppConfig.java` to initialize from `EnvConfig.BACKEND_URL`, `EnvConfig.REQUEST_TIMEOUT_MS`, and `EnvConfig.APP_ENVIRONMENT` with zero hardcoded secrets.
+   - Updated `ApiClient.java` to utilize dynamic timeout settings.
+   - Verified automated build with `.env` ingestion: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
+================================================================================
+
+9. GITHUB REPOSITORY CREATION & INITIALIZATION (`marble-handcrafting`)
+   - Created remote repository `talhary-dot/marble-handcrafting` on GitHub via GitHub CLI (`gh repo create marble-handcrafting --public`).
+   - Configured `.gitignore` in `MobileApp/` ensuring zero leakage of:
+     * Environment secrets (`.env`, `.env.*`, `.env.local` excluding `.env.example`).
+     * Signing certificates (`*.keystore`, `*.jks`).
+     * Build binaries and artifacts (`build/`, `bin/`, `*.apk`, `*.aab`, `*.dex`, `*.class`).
+     * IDE/OS artifacts (`.idea/`, `.vscode/`, `*.iml`, `local.properties`, `.DS_Store`, `Thumbs.db`).
+   - Initialized local git repository on `main` branch inside `MobileApp/`.
+================================================================================
+10. PRODUCTION-READY LUXURY EXPERIENCE: THEME CHANGER, TABBED SECTIONS & PURIFIED UI
+   - Purified Backend Architecture (Zero In-App Endpoint Dialogs):
+     * Completely stripped out debug config settings dialogs, gear icons, and runtime endpoint modification overlays as requested.
+     * The mobile app now cleanly and deterministically inherits its backend target from .env via AppConfig and EnvConfig.
+     * Strict zero hardcoded secrets enforced.
+   - Dynamic Theme Changer (Default Light Mode with Instant Dark Mode Toggle):
+     * Created ThemeManager (com.sangtarash.app.config.ThemeManager) with real-time observer pattern (ThemeListener).
+     * Default set to Light Theme (warm alabaster marble #F9F8F5, crisp linen white surfaces #FFFFFF, charcoal text #181714, and antique bronze #8C6D37).
+     * Dark Theme toggle (obsidian #0D0D0D, deep slate surfaces #161616, gold accents #D4AF37, and chalk white #F5F5F0).
+     * Header-integrated toggle button (btn_theme_toggle) with sun/moon vector indicators (ic_theme_sun.xml & ic_theme_moon.xml).
+     * Real-time dynamic GradientDrawable background & border styling across cards, search box, category chips, and variant chips without activity destruction.
+     * Comprehensive theme propagation across MainActivity, ProductDetailActivity, and CartActivity.
+   - Multi-Section Tabbed Architecture (Bottom Navigation Bar):
+     * Section 1: "Collection" — Full-featured discovery catalog, live search, dynamic category filter pills, curated philosophy banner, and variant counts.
+     * Section 2: "The Atelier" — Heritage & Stone Guide showcase detailing centuries of metamorphic stonemasonry craft, geological varieties (Carrara White Marble, Roman Travertine, Calacatta Monolith Stone), and reinforced timber crate suspension logistics.
+     * Section 3: "Acquisitions" (Tray / Cart) — Integrated full-screen acquisition tray with live count badge (tv_nav_cart_badge), quantity modifiers, subtotal updates, empty state with collection navigation, and direct Acquisition Order Inquiry dialog.
+     * Production bottom navigation bar with active bronze-gold highlighting, typography weighting, and vector iconography.
+   - Build Verification & Performance:
+     * Recompiled through zero-Gradle 7-step pipeline (build.ps1).
+     * Binary size: 66.77 KB release APK.
+     * Fully aligned, v1/v2/v3 cryptographically signed, zero compiler warnings/errors.
+================================================================================

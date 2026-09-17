@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Background Circle -->
+    <path
+        android:fillColor="#121212"
+        android:pathData="M54,0 A54,54 0 1,0 54,108 A54,54 0 1,0 54,0 Z" />
+    <!-- Outer Gold Ring -->
+    <path
+        android:strokeColor="#C5A059"
+        android:strokeWidth="2"
+        android:pathData="M54,12 A42,42 0 1,0 54,96 A42,42 0 1,0 54,12 Z" />
+    <!-- Chiseled Stone Vessel Monogram -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M34,42 L74,42 L66,74 L42,74 Z" />
+    <path
+        android:fillColor="#EAD7A4"
+        android:pathData="M34,42 L54,34 L74,42 L54,46 Z" />
+    <path
+        android:strokeColor="#8C6D37"
+        android:strokeWidth="1.5"
+        android:pathData="M54,46 L54,74" />
+</vector>
