@@ -148,7 +148,7 @@ export function ProductDetailClient({ product }: { product: ClientProduct }) {
 
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             {/* Product Image Stage & Size Gallery */}
-            <div className="space-y-4 sticky top-28">
+            <div className="space-y-4 lg:sticky lg:top-28">
               {/* Main Image */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-card border border-border/50 boty-shadow">
                 <Image

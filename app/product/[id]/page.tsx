@@ -25,6 +25,15 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, "")
     .replace(/--+/g, "-")
 }
+function getSiteBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")
+  if (process.env.URL) return process.env.URL.replace(/\/$/, "") // Netlify production site URL
+  if (process.env.DEPLOY_PRIME_URL) return process.env.DEPLOY_PRIME_URL.replace(/\/$/, "") // Netlify deploy preview URL
+  if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/$/, "")
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`
+  return ""
+}
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { id } = await params
@@ -42,7 +51,9 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const baseTitle = (product as any).seoTitle || `${product.name} | Sang Tarash Marble Handicrafts`
   const title = sizeParam ? `${product.name} (${sizeParam}) | Sang Tarash` : baseTitle
   const cleanDescription = (product as any).seoDescription || (product.description ? product.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) : "Handcrafted natural marble and architectural stoneware by Sang Tarash.")
-  const canonicalUrl = `https://sangtarash.com/product/${(product as any).slug || product.id}`
+  const siteUrl = getSiteBaseUrl()
+  const productPath = `/product/${(product as any).slug || product.id}`
+  const canonicalUrl = siteUrl ? `${siteUrl}${productPath}` : productPath
 
   return {
     title,
@@ -200,7 +211,7 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
       "priceCurrency": "USD",
       "itemCondition": "https://schema.org/NewCondition",
       "availability": size.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": `https://sangtarash.com/product/${product.slug}?size=${slugify(size.sizeName)}`
+      "url": `${getSiteBaseUrl()}/product/${product.slug || product.id}?size=${slugify(size.sizeName)}`
     })),
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -236,7 +247,7 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
 
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left Column: Image Stage (SSR Rendered) */}
-              <div className="space-y-4 sticky top-28">
+              <div className="space-y-4 lg:sticky lg:top-28">
                 <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-card border border-border/50 boty-shadow">
                   <Image
                     src={mainImage}

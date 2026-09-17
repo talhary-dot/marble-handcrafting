@@ -534,3 +534,14 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
    - Replaced undefined shorthand `description` properties in `openGraph` and `twitter` objects with `description: cleanDescription`.
    - Added null-safe fallback handling for `product.description` and custom SEO overrides.
 ================================================================================
+
+13. DYNAMIC ENVIRONMENT & NETLIFY DEPLOYMENT URL RESOLUTION
+   - Replaced hardcoded domain references in `app/product/[id]/page.tsx` with dynamic `getSiteBaseUrl()`.
+   - Added automated detection for Netlify environment variables (`process.env.URL`, `process.env.DEPLOY_PRIME_URL`, `process.env.SITE_URL`) alongside `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_APP_URL`.
+   - Configured dynamic `metadataBase` in `app/layout.tsx` for clean relative URL resolution across SEO tags, OpenGraph, and JSON-LD schemas.
+================================================================================
+
+14. FIXED MOBILE RESPONSIVE SCROLL OVERLAP ON PRODUCT DETAIL PAGE
+   - Fixed sticky position bug on mobile screens in `app/product/[id]/page.tsx` and `app/product/[id]/product-detail-client.tsx`.
+   - Replaced unconditional `sticky top-28` with `lg:sticky lg:top-28` so the product image container flows naturally on mobile/tablet viewports and sticks only on large desktop viewports (`lg:`+), eliminating element overlapping on scroll.
+================================================================================

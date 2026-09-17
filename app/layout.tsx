@@ -17,7 +17,11 @@ const playfairDisplay = Playfair_Display({
   weight: ['400', '500', '600', '700']
 });
 
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || process.env.URL || process.env.DEPLOY_PRIME_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+const siteUrl = rawSiteUrl.startsWith('http') ? rawSiteUrl : `https://${rawSiteUrl}`
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Sang Tarash — Marble Handicrafts & Stone Sculptures',
   description: 'Handcrafted marble objects, timeless stone sculptures, and burnished copper bronze stoneware by Sang Tarash.',
   generator: 'v0.app',
