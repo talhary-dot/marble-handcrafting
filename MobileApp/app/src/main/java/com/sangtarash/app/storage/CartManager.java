@@ -136,4 +136,8 @@ public class CartManager {
         }
         return total;
     }
+
+    public static int getSubtotal(Context context) {
+        return getTotalPrice(context);
+    }
 }

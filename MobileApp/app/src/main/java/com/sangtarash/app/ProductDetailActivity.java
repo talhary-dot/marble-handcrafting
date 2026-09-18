@@ -19,6 +19,7 @@ import com.sangtarash.app.model.ProductSize;
 import com.sangtarash.app.net.ApiClient;
 import com.sangtarash.app.net.ImageLoader;
 import com.sangtarash.app.storage.CartManager;
+import com.sangtarash.app.storage.WishlistManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +90,7 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
     private TextView mTvQty;
     private TextView mBtnQtyPlus;
     private Button mBtnAddToCart;
+    private ImageView mBtnWishlist;
 
     // State
     private Product mProduct;
@@ -110,14 +112,38 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         Object passedProduct = getIntent().getSerializableExtra("product_obj");
         String passedId = getIntent().getStringExtra("product_id");
 
+        // Extract ID or slug from Deep Link URI
+        if (passedProduct == null && passedId == null && getIntent().getData() != null) {
+            android.net.Uri uri = getIntent().getData();
+            String path = uri.getPath();
+            if (path != null && path.contains("/product/")) {
+                passedId = uri.getLastPathSegment();
+            } else if ("sangtarash".equalsIgnoreCase(uri.getScheme())) {
+                passedId = uri.getLastPathSegment();
+                if (passedId == null && uri.getHost() != null) {
+                    passedId = uri.getHost();
+                }
+            }
+        }
+
         if (passedProduct instanceof Product) {
             mProduct = (Product) passedProduct;
             bindProductData();
-        } else if (passedId != null) {
+        } else if (passedId != null && !passedId.isEmpty()) {
             fetchProductData(passedId);
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isTaskRoot()) {
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(mainIntent);
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -213,6 +239,11 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         if (mBtnQtyMinus != null) mBtnQtyMinus.setTextColor(ThemeManager.getBronze(isDark));
         if (mBtnQtyPlus != null) mBtnQtyPlus.setTextColor(ThemeManager.getBronze(isDark));
         if (mTvQty != null) mTvQty.setTextColor(ThemeManager.getTextPrimary(isDark));
+        if (mBtnWishlist != null) {
+            mBtnWishlist.setBackground(ThemeManager.createSecondaryButtonDrawable(isDark, qtyRadius));
+            boolean isWish = mProduct != null && WishlistManager.isWishlisted(this, mProduct.id);
+            mBtnWishlist.setColorFilter(isWish ? ThemeManager.getGold(isDark) : ThemeManager.getTextMuted(isDark));
+        }
 
         // Re-render dynamic list items
         if (mProduct != null) {
@@ -308,13 +339,14 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         mTvQty = findViewById(R.id.tv_qty);
         mBtnQtyPlus = findViewById(R.id.btn_qty_plus);
         mBtnAddToCart = findViewById(R.id.btn_add_to_cart);
+        mBtnWishlist = findViewById(R.id.btn_detail_wishlist);
     }
 
     private void setupListeners() {
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
@@ -358,6 +390,26 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
                 updateCartBadge();
             }
         });
+
+        if (mBtnWishlist != null) {
+            mBtnWishlist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mProduct == null) return;
+                    boolean favorited = WishlistManager.toggle(ProductDetailActivity.this, mProduct.id);
+                    updateWishlistIcon(favorited);
+                    Toast.makeText(ProductDetailActivity.this, favorited ? "Piece saved to Patron Wishlist" : "Removed from Wishlist", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void updateWishlistIcon(boolean favorited) {
+        if (mBtnWishlist != null) {
+            mBtnWishlist.setImageResource(favorited ? R.drawable.ic_heart_filled : R.drawable.ic_heart);
+            boolean isDark = ThemeManager.isDarkMode(this);
+            mBtnWishlist.setColorFilter(favorited ? ThemeManager.getGold(isDark) : ThemeManager.getTextMuted(isDark));
+        }
     }
 
     private void updateCartBadge() {
@@ -392,6 +444,7 @@ public class ProductDetailActivity extends Activity implements CartManager.CartL
         mTvTagline.setText(mProduct.tagline);
         mTvOrigin.setText(mProduct.origin);
         mTvStoneBadge.setText(mProduct.stoneType);
+        updateWishlistIcon(WishlistManager.isWishlisted(this, mProduct.id));
 
         // Strip HTML if description contains tags
         String cleanDesc = mProduct.description != null ? mProduct.description.replaceAll("<[^>]*>", "").trim() : "";

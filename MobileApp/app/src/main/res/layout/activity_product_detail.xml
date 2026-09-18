@@ -507,5 +507,16 @@
             android:textColor="@color/bg_obsidian"
             android:textSize="14sp"
             android:textStyle="bold" />
+
+        <!-- Wishlist Button -->
+        <ImageView
+            android:id="@+id/btn_detail_wishlist"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_btn_secondary"
+            android:padding="12dp"
+            android:src="@drawable/ic_heart"
+            android:contentDescription="Wishlist" />
     </LinearLayout>
 </RelativeLayout>

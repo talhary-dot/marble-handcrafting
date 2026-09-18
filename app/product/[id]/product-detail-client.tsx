@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { 
   ChevronLeft, 
   Minus, 
@@ -14,11 +15,13 @@ import {
   ShieldCheck, 
   Star, 
   Check, 
-  Layers
+  Layers,
+  Heart
 } from "lucide-react"
 import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
+import { useWishlist } from "@/components/boty/wishlist-context"
 import { sanitizeHtml } from "@/lib/sanitize"
 
 
@@ -64,7 +67,10 @@ const benefits = [
 type AccordionSection = "specs" | "artisan" | "care" | "shipping"
 
 export function ProductDetailClient({ product }: { product: ClientProduct }) {
+  const router = useRouter()
   const { addItem } = useCart()
+  const { toggleWishlist, isInWishlist } = useWishlist()
+  const isFavorited = isInWishlist(product.id)
 
   // Find default size or first size
   const defaultIndex = Math.max(0, product.sizes.findIndex(s => s.isDefault))
@@ -102,6 +108,17 @@ export function ProductDetailClient({ product }: { product: ClientProduct }) {
     })
     setIsAdded(true)
     setTimeout(() => setIsAdded(false), 2200)
+  }
+
+  const handleInstantCheckout = () => {
+    addItem({
+      id: `${product.id}-${currentSize.id}`,
+      name: `${product.name} — ${currentSize.sizeName}`,
+      description: `${currentSize.dimensions} • ${product.stoneType}`,
+      price: currentSize.price,
+      image: selectedImage || product.featuredImage
+    })
+    router.push("/checkout")
   }
 
   const accordionItems: { key: AccordionSection; title: string; content: string }[] = [
@@ -341,11 +358,11 @@ export function ProductDetailClient({ product }: { product: ClientProduct }) {
               </div>
 
               {/* Add to Cart Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+              <div className="flex flex-col sm:flex-row items-center gap-3 mb-10">
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className={`flex-1 inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full text-sm font-medium tracking-wide boty-transition ${
+                  className={`flex-1 w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider boty-transition ${
                     isAdded
                       ? "bg-primary/90 text-primary-foreground"
                       : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_4px_25px_rgba(158,86,50,0.35)]"
@@ -365,10 +382,32 @@ export function ProductDetailClient({ product }: { product: ClientProduct }) {
 
                 <button
                   type="button"
-                  onClick={handleAddToCart}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/25 text-foreground px-8 py-4 rounded-full text-sm font-medium tracking-wide boty-transition hover:bg-foreground/5"
+                  onClick={handleInstantCheckout}
+                  className="flex-1 w-full inline-flex items-center justify-center gap-2 bg-card border border-border/80 text-foreground hover:border-primary/60 px-6 py-4 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider boty-transition"
                 >
                   Instant Checkout
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => toggleWishlist({
+                    id: product.id,
+                    name: product.name,
+                    price: currentSize.price,
+                    image: product.featuredImage,
+                    stoneType: product.stoneType,
+                    origin: product.origin,
+                    description: currentSize.dimensions
+                  })}
+                  className={`p-4 rounded-full border boty-transition flex items-center justify-center ${
+                    isFavorited
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border/70 text-muted-foreground hover:text-foreground hover:border-foreground/40"
+                  }`}
+                  aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+                  title={isFavorited ? "Saved to Wishlist" : "Save to Wishlist"}
+                >
+                  <Heart className={`w-5 h-5 ${isFavorited ? "fill-primary text-primary" : ""}`} />
                 </button>
               </div>
 

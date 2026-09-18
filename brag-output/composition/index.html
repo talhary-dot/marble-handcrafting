@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Sang Tarash Atelier — Launch Promo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #09090b;
+        color: #f5f2eb;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 40%, #17130b 0%, #0a0a0c 65%, #050506 100%);
+      }
+
+      /* Noise & vignette overlay */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at center, transparent 40%, rgba(5, 5, 6, 0.85) 100%);
+        z-index: 2;
+      }
+      .ambient-glow {
+        position: absolute;
+        width: 900px;
+        height: 900px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(197, 160, 89, 0.12) 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Architectural Hairline Border */
+      .gold-frame {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        right: 40px;
+        bottom: 40px;
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        pointer-events: none;
+        z-index: 3;
+      }
+      .gold-frame::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        width: 12px;
+        height: 12px;
+        border-top: 2px solid #c5a059;
+        border-left: 2px solid #c5a059;
+      }
+      .gold-frame::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        right: -6px;
+        width: 12px;
+        height: 12px;
+        border-bottom: 2px solid #c5a059;
+        border-right: 2px solid #c5a059;
+      }
+
+      /* Common scene styles */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 10;
+      }
+
+      /* Typography */
+      .serif-title {
+        font-family: 'Cinzel', serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #f5f2eb;
+      }
+      .gold-text {
+        color: #c5a059;
+        background: linear-gradient(135deg, #e5cf92 0%, #c5a059 50%, #9a7b38 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .subheading {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 38px;
+        letter-spacing: 0.08em;
+        color: #d1cbc1;
+        font-style: italic;
+      }
+      .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 24px;
+        border-radius: 9999px;
+        border: 1px solid rgba(197, 160, 89, 0.4);
+        background: rgba(23, 19, 11, 0.7);
+        backdrop-filter: blur(12px);
+        font-size: 15px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #e5cf92;
+        margin-bottom: 24px;
+      }
+
+      /* Scene 1: Quarry Genesis */
+      #scene-1 .brand-title {
+        font-size: 88px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+      }
+      #scene-1 .hook-line {
+        font-family: 'Cinzel', serif;
+        font-size: 32px;
+        letter-spacing: 0.32em;
+        color: #e5cf92;
+        margin-top: 24px;
+        text-transform: uppercase;
+      }
+
+      /* Scene 2: Quarry & Masonry */
+      #scene-2 .quarry-card {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        width: 1400px;
+        padding: 50px;
+        border: 1px solid rgba(197, 160, 89, 0.25);
+        background: rgba(15, 14, 13, 0.8);
+        border-radius: 4px;
+        backdrop-filter: blur(16px);
+      }
+      #scene-2 .quarry-img {
+        width: 540px;
+        height: 480px;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid rgba(197, 160, 89, 0.4);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      }
+      #scene-2 .quarry-info {
+        flex: 1;
+      }
+      #scene-2 .masonry-h2 {
+        font-size: 52px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+      #scene-2 .masonry-desc {
+        font-size: 24px;
+        color: #a8a29e;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        font-weight: 300;
+      }
+
+      /* Scene 3: The Showcase */
+      #scene-3 .showcase-header {
+        text-align: center;
+        margin-bottom: 44px;
+      }
+      #scene-3 .triptych {
+        display: flex;
+        gap: 36px;
+        width: 1540px;
+        justify-content: center;
+      }
+      .product-card {
+        flex: 1;
+        background: rgba(18, 17, 16, 0.85);
+        border: 1px solid rgba(197, 160, 89, 0.28);
+        border-radius: 4px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(14px);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+        transform-origin: center bottom;
+      }
+      .product-card img {
+        width: 100%;
+        height: 380px;
+        object-fit: cover;
+        border-radius: 2px;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .product-tag {
+        font-size: 13px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #c5a059;
+        margin-bottom: 8px;
+        font-family: 'Cinzel', serif;
+      }
+      .product-name {
+        font-family: 'Cinzel', serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: #f5f2eb;
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+      .product-price {
+        font-size: 24px;
+        color: #e5cf92;
+        font-weight: 500;
+        margin-top: auto;
+      }
+
+      /* Scene 4: Heritage Standard */
+      #scene-4 .standards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        width: 1440px;
+        margin-top: 40px;
+      }
+      .standard-box {
+        background: rgba(19, 18, 17, 0.85);
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        padding: 44px 36px;
+        text-align: center;
+        border-radius: 4px;
+      }
+      .standard-icon {
+        font-size: 42px;
+        color: #c5a059;
+        margin-bottom: 20px;
+      }
+      .standard-title {
+        font-family: 'Cinzel', serif;
+        font-size: 24px;
+        color: #f5f2eb;
+        margin-bottom: 14px;
+        letter-spacing: 0.1em;
+      }
+      .standard-desc {
+        font-size: 18px;
+        color: #9e978e;
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      /* Scene 5: Outro */
+      #scene-5 .emblem {
+        width: 90px;
+        height: 90px;
+        border: 2px solid #c5a059;
+        transform: rotate(45deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+      }
+      #scene-5 .emblem-inner {
+        width: 68px;
+        height: 68px;
+        border: 1px solid rgba(229, 207, 146, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #scene-5 .emblem-core {
+        width: 24px;
+        height: 24px;
+        background: #c5a059;
+      }
+      #scene-5 .outro-brand {
+        font-size: 76px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      #scene-5 .outro-claim {
+        font-family: 'Cinzel', serif;
+        font-size: 26px;
+        letter-spacing: 0.3em;
+        color: #c5a059;
+        margin-bottom: 36px;
+        text-transform: uppercase;
+      }
+      #scene-5 .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 44px;
+        background: linear-gradient(135deg, #c5a059 0%, #9e7d38 100%);
+        color: #0d0d0d;
+        font-family: 'Cinzel', serif;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        border-radius: 2px;
+        border: none;
+        box-shadow: 0 10px 40px rgba(197, 160, 89, 0.35);
+      }
+      #scene-5 .url-tag {
+        font-size: 20px;
+        letter-spacing: 0.25em;
+        color: #a8a29e;
+        margin-top: 24px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="18"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Audio Tracks -->
+      <audio id="bgm" data-start="0" data-duration="18" data-track-index="1" data-volume="0.14" src="assets/music/music.mp3"></audio>
+      <audio id="vo" data-start="1" data-duration="14.42" data-track-index="2" data-volume="1" src="assets/voiceover.wav"></audio>
+      <audio id="sfx-bell" data-start="0.4" data-track-index="3" data-volume="0.6" src="assets/sfx/impactBell_heavy_000.ogg"></audio>
+      <audio id="sfx-chime" data-start="7.0" data-track-index="4" data-volume="0.5" src="assets/sfx/bong_001.ogg"></audio>
+
+      <!-- Decorative Ambient Elements -->
+      <div class="ambient-glow"></div>
+      <div class="vignette"></div>
+      <div class="gold-frame"></div>
+
+      <!-- Scene 1: The Mountain Hook (0.0s – 3.2s) -->
+      <div id="scene-1" class="scene">
+        <div class="badge-pill">Atelier De Marbre • Est. Kabul</div>
+        <h1 class="serif-title brand-title gold-text">Sang Tarash</h1>
+        <p class="subheading">Bespoke Architectural Stonecraft</p>
+        <div class="hook-line">Carved from living mountains</div>
+      </div>
+
+      <!-- Scene 2: Quarry & Masonry (3.2s – 7.0s) -->
+      <div id="scene-2" class="scene">
+        <div class="quarry-card">
+          <img class="quarry-img" src="assets/images/quarry.jpg" alt="Geological Stone Quarry">
+          <div class="quarry-info">
+            <div class="badge-pill">Geological Strata</div>
+            <h2 class="serif-title masonry-h2">Sculpted By Master Stonemasons</h2>
+            <p class="masonry-desc">
+              Every creation begins inside the mountains of Central Asia. 
+              Carved from single unbroken monoliths of Roman Travertine and Carrara Marble.
+            </p>
+            <div style="display: flex; gap: 24px;">
+              <span style="font-family: 'Cinzel', serif; font-size: 16px; color: #c5a059; letter-spacing: 0.15em;">✦ 100% SOLID STONE</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 16px; color: #c5a059; letter-spacing: 0.15em;">✦ ZERO COMPOSITES</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3: The Monolithic Showcase (7.0s – 12.0s) -->
+      <div id="scene-3" class="scene">
+        <div class="showcase-header">
+          <div class="badge-pill">The Atelier Collection</div>
+          <h2 class="serif-title" style="font-size: 46px; letter-spacing: 0.15em;">Monolithic Vessels & Stands</h2>
+        </div>
+        <div class="triptych">
+          <!-- Card 1 -->
+          <div class="product-card" id="card-1">
+            <img src="assets/images/travertine-pedestal.jpg" alt="Roman Travertine Pedestal">
+            <div class="product-tag">Roman Travertine</div>
+            <div class="product-name">The Fluted Pedestal Tray</div>
+            <div class="product-price">$340 USD</div>
+          </div>
+          <!-- Card 2 -->
+          <div class="product-card" id="card-2">
+            <img src="assets/images/carved-stone-bowl.jpg" alt="Solid Carved Stone Vessel">
+            <div class="product-tag">Nero Marquina</div>
+            <div class="product-name">Deep Sculpted Vessel</div>
+            <div class="product-price">$260 USD</div>
+          </div>
+          <!-- Card 3 -->
+          <div class="product-card" id="card-3">
+            <img src="assets/images/white-marble-totem.jpg" alt="Carrara White Marble Totem">
+            <div class="product-tag">Carrara White</div>
+            <div class="product-name">Architectural Totem Stand</div>
+            <div class="product-price">$380 USD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 4: The Heritage Standard (12.0s – 15.2s) -->
+      <div id="scene-4" class="scene">
+        <div class="badge-pill">The Sang Tarash Standard</div>
+        <h2 class="serif-title" style="font-size: 44px; letter-spacing: 0.18em; margin-bottom: 12px;">
+          Bespoke White-Glove Acquisition
+        </h2>
+        <p class="subheading" style="font-size: 28px;">Engineered to endure for generations</p>
+        <div class="standards-grid">
+          <div class="standard-box" id="std-1">
+            <div class="standard-icon">⚱</div>
+            <h3 class="standard-title">Timber Crated</h3>
+            <p class="standard-desc">Encased in reinforced artisan timber crates with foam suspension.</p>
+          </div>
+          <div class="standard-box" id="std-2">
+            <div class="standard-icon">📜</div>
+            <h3 class="standard-title">Certified Provenance</h3>
+            <p class="standard-desc">Registered Certificate of Acquisition signed by the lead stonemason.</p>
+          </div>
+          <div class="standard-box" id="std-3">
+            <div class="standard-icon">🏛</div>
+            <h3 class="standard-title">In-Home Placement</h3>
+            <p class="standard-desc">White-glove courier delivery direct to your architectural sanctuary.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 5: Gilded Outro (15.2s – 18.0s) -->
+      <div id="scene-5" class="scene">
+        <div class="emblem">
+          <div class="emblem-inner">
+            <div class="emblem-core"></div>
+          </div>
+        </div>
+        <h1 class="serif-title outro-brand gold-text">Sang Tarash</h1>
+        <p class="outro-claim">Sculpted To Outlive Civilization</p>
+        <div class="cta-button">Explore The Atelier</div>
+        <p class="url-tag">sangtarash.com</p>
+      </div>
+    </div>
+
+    <!-- GSAP Master Animation Timeline -->
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+
+      // ==========================================
+      // SCENE 1: The Mountain Hook (0.0s – 3.2s)
+      // ==========================================
+      tl.set("#scene-1", { autoAlpha: 1 }, 0);
+      tl.fromTo("#scene-1 .badge-pill", 
+        { autoAlpha: 0, y: -20 }, 
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2
+      );
+      tl.fromTo("#scene-1 .brand-title", 
+        { autoAlpha: 0, scale: 0.92, y: 15 }, 
+        { autoAlpha: 1, scale: 1, y: 0, duration: 1.2, ease: "power3.out" }, 0.4
+      );
+      tl.fromTo("#scene-1 .subheading", 
+        { autoAlpha: 0, y: 20 }, 
+        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" }, 0.8
+      );
+      tl.fromTo("#scene-1 .hook-line", 
+        { autoAlpha: 0, y: 25 }, 
+        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" }, 1.2
+      );
+      // Scene 1 Exit
+      tl.to("#scene-1", { autoAlpha: 0, scale: 1.04, duration: 0.6, ease: "power2.in" }, 2.8);
+
+      // ==========================================
+      // SCENE 2: Quarry & Masonry (3.2s – 7.0s)
+      // ==========================================
+      tl.set("#scene-2", { autoAlpha: 1 }, 3.2);
+      tl.fromTo("#scene-2 .quarry-card", 
+        { autoAlpha: 0, y: 40, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 3.2
+      );
+      tl.fromTo("#scene-2 .quarry-img", 
+        { scale: 1.08 }, 
+        { scale: 1.0, duration: 3.2, ease: "power1.out" }, 3.2
+      );
+      tl.fromTo("#scene-2 .quarry-info > *", 
+        { autoAlpha: 0, x: 25 }, 
+        { autoAlpha: 1, x: 0, stagger: 0.2, duration: 0.8, ease: "power2.out" }, 3.5
+      );
+      // Scene 2 Exit
+      tl.to("#scene-2", { autoAlpha: 0, y: -30, duration: 0.6, ease: "power2.in" }, 6.5);
+
+      // ==========================================
+      // SCENE 3: The Showcase (7.0s – 12.0s)
+      // ==========================================
+      tl.set("#scene-3", { autoAlpha: 1 }, 7.0);
+      tl.fromTo("#scene-3 .showcase-header", 
+        { autoAlpha: 0, y: -25 }, 
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }, 7.0
+      );
+      // Staggered luxury triptych entrance
+      tl.fromTo("#card-1", 
+        { autoAlpha: 0, y: 60, scale: 0.92 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: "back.out(1.2)" }, 7.3
+      );
+      tl.fromTo("#card-2", 
+        { autoAlpha: 0, y: 60, scale: 0.92 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: "back.out(1.2)" }, 7.6
+      );
+      tl.fromTo("#card-3", 
+        { autoAlpha: 0, y: 60, scale: 0.92 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: "back.out(1.2)" }, 7.9
+      );
+      // Slow elegant breathe zoom on cards
+      tl.to([ "#card-1 img", "#card-2 img", "#card-3 img" ], { scale: 1.05, duration: 3.5, ease: "sine.inOut" }, 8.0);
+      // Scene 3 Exit
+      tl.to("#scene-3", { autoAlpha: 0, scale: 0.95, duration: 0.6, ease: "power2.in" }, 11.5);
+
+      // ==========================================
+      // SCENE 4: Heritage Standard (12.0s – 15.2s)
+      // ==========================================
+      tl.set("#scene-4", { autoAlpha: 1 }, 12.0);
+      tl.fromTo("#scene-4 h2, #scene-4 .badge-pill, #scene-4 p.subheading", 
+        { autoAlpha: 0, y: -20 }, 
+        { autoAlpha: 1, y: 0, stagger: 0.15, duration: 0.7, ease: "power2.out" }, 12.0
+      );
+      tl.fromTo([ "#std-1", "#std-2", "#std-3" ], 
+        { autoAlpha: 0, y: 35 }, 
+        { autoAlpha: 1, y: 0, stagger: 0.2, duration: 0.8, ease: "power3.out" }, 12.3
+      );
+      // Scene 4 Exit
+      tl.to("#scene-4", { autoAlpha: 0, duration: 0.5, ease: "power2.in" }, 14.8);
+
+      // ==========================================
+      // SCENE 5: Gilded Outro (15.2s – 18.0s)
+      // ==========================================
+      tl.set("#scene-5", { autoAlpha: 1 }, 15.2);
+      tl.fromTo("#scene-5 .emblem", 
+        { autoAlpha: 0, scale: 0.6, rotation: 0 }, 
+        { autoAlpha: 1, scale: 1, rotation: 45, duration: 0.9, ease: "back.out(1.4)" }, 15.2
+      );
+      tl.fromTo("#scene-5 .outro-brand", 
+        { autoAlpha: 0, y: 25 }, 
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }, 15.5
+      );
+      tl.fromTo("#scene-5 .outro-claim", 
+        { autoAlpha: 0, y: 15, scale: 0.95 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.0, ease: "power2.out" }, 15.8
+      );
+      tl.fromTo("#scene-5 .cta-button", 
+        { autoAlpha: 0, scale: 0.9 }, 
+        { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.3)" }, 16.2
+      );
+      tl.fromTo("#scene-5 .url-tag", 
+        { autoAlpha: 0 }, 
+        { autoAlpha: 1, duration: 0.6, ease: "power1.out" }, 16.5
+      );
+
+      // Seek to beginning
+      tl.seek(0);
+    </script>
+  </body>
+</html>

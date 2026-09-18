@@ -58,3 +58,29 @@ export type NewDbProductSize = typeof productSizes.$inferInsert
 export type ProductWithSizes = DbProduct & {
   sizes: DbProductSize[]
 }
+
+export const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  customerName: text("customer_name").notNull(),
+  customerEmail: text("customer_email").notNull(),
+  customerPhone: text("customer_phone").notNull(),
+  shippingAddress: text("shipping_address").notNull(),
+  city: text("city").notNull(),
+  state: text("state").notNull(),
+  postalCode: text("postal_code").notNull(),
+  country: text("country").notNull(),
+  deliveryMethod: text("delivery_method").notNull().default("insured_crate"),
+  paymentMethod: text("payment_method").notNull().default("whatsapp"),
+  items: text("items").notNull(), // JSON string array of cart items
+  subtotal: integer("subtotal").notNull(),
+  shippingCost: integer("shipping_cost").notNull().default(0),
+  totalAmount: integer("total_amount").notNull(),
+  status: text("status").notNull().default("pending"),
+  customInscription: text("custom_inscription"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull()
+})
+
+export type DbOrder = typeof orders.$inferSelect
+export type NewDbOrder = typeof orders.$inferInsert

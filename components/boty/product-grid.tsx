@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ShoppingBag, ArrowRight } from "lucide-react"
+import { ShoppingBag, ArrowRight, Heart } from "lucide-react"
 import { useCart } from "./cart-context"
+import { useWishlist } from "./wishlist-context"
 import { products, type Product } from "@/lib/products"
 
 type Category = "home" | "tableware" | "sculptures" | "decor"
@@ -24,6 +25,7 @@ export function ProductGrid() {
   const gridRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const { addItem } = useCart()
+  const { toggleWishlist, isInWishlist } = useWishlist()
   
   const filteredProducts = products.filter(product => product.category === selectedCategory)
 
@@ -164,6 +166,32 @@ export function ProductGrid() {
                   <span className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md text-[11px] font-medium bg-background/80 backdrop-blur-sm text-foreground/80 border border-white/20">
                     {product.stoneType.split('&')[0].trim()}
                   </span>
+
+                  {/* Wishlist Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      toggleWishlist({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        stoneType: product.stoneType,
+                        origin: product.origin,
+                        description: product.dimensions
+                      })
+                    }}
+                    className={`absolute top-4 right-4 w-9 h-9 rounded-full backdrop-blur-md border flex items-center justify-center boty-transition shadow-sm ${
+                      isInWishlist(product.id)
+                        ? "bg-primary/20 border-primary text-primary"
+                        : "bg-background/80 border-border/60 text-muted-foreground hover:text-foreground"
+                    }`}
+                    aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? "fill-primary text-primary" : ""}`} />
+                  </button>
 
                   {/* Quick Add Button */}
                   <button

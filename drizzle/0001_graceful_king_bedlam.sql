@@ -1,0 +1,22 @@
+CREATE TABLE "orders" (
+	"id" text PRIMARY KEY NOT NULL,
+	"customer_name" text NOT NULL,
+	"customer_email" text NOT NULL,
+	"customer_phone" text NOT NULL,
+	"shipping_address" text NOT NULL,
+	"city" text NOT NULL,
+	"state" text NOT NULL,
+	"postal_code" text NOT NULL,
+	"country" text NOT NULL,
+	"delivery_method" text DEFAULT 'insured_crate' NOT NULL,
+	"payment_method" text DEFAULT 'whatsapp' NOT NULL,
+	"items" text NOT NULL,
+	"subtotal" integer NOT NULL,
+	"shipping_cost" integer DEFAULT 0 NOT NULL,
+	"total_amount" integer NOT NULL,
+	"status" text DEFAULT 'pending' NOT NULL,
+	"custom_inscription" text,
+	"notes" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);

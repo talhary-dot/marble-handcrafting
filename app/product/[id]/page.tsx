@@ -220,11 +220,46 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
     }
   }
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": getSiteBaseUrl()
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Collection",
+        "item": `${getSiteBaseUrl()}/shop`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : "Art",
+        "item": `${getSiteBaseUrl()}/shop?category=${encodeURIComponent(product.category || "home")}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": product.name,
+        "item": `${getSiteBaseUrl()}/product/${product.slug || product.id}`
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       <main className="min-h-screen bg-background">

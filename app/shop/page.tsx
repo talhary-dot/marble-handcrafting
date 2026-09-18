@@ -4,10 +4,21 @@ import { useState, useEffect, useRef, useMemo, Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { ShoppingBag, SlidersHorizontal, X, Search, Sparkles } from "lucide-react"
+import { 
+  ShoppingBag, 
+  SlidersHorizontal, 
+  X, 
+  Search, 
+  Sparkles, 
+  Heart, 
+  ArrowUpDown, 
+  Check, 
+  Filter 
+} from "lucide-react"
 import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
+import { useWishlist } from "@/components/boty/wishlist-context"
 import { products as staticProducts, type Product } from "@/lib/products"
 
 const categories = [
@@ -18,13 +29,27 @@ const categories = [
   { id: "decor", label: "Stone Accents" }
 ]
 
+const stoneTypes = [
+  "All Stones",
+  "Carrara",
+  "Travertine",
+  "Nero Marquina",
+  "Onyx",
+  "Rainforest Green",
+  "Bespoke Marble"
+]
+
 function ShopContent() {
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get("category") || "all"
+  const initialSearch = searchParams.get("search") || ""
   
   const [allProducts, setAllProducts] = useState<any[]>(staticProducts)
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedStone, setSelectedStone] = useState("All Stones")
+  const [sortBy, setSortBy] = useState<"featured" | "price_asc" | "price_desc" | "name_asc">("featured")
+  const [inStockOnly, setInStockOnly] = useState(false)
+  const [searchQuery, setSearchQuery] = useState(initialSearch)
   const [showFilters, setShowFilters] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const gridRef = useRef<HTMLDivElement>(null)
@@ -48,7 +73,8 @@ function ShopContent() {
               stoneType: p.stoneType,
               origin: p.origin,
               dimensions: p.sizes?.[0]?.dimensions || p.dimensions || "",
-              weight: p.sizes?.[0]?.weight || p.weight || ""
+              weight: p.sizes?.[0]?.weight || p.weight || "",
+              stock: p.sizes?.[0]?.stock !== undefined ? p.sizes[0].stock : 10
             }
           })
           setAllProducts(mapped)
@@ -62,19 +88,40 @@ function ShopContent() {
     if (categoryParam && categories.some(c => c.id === categoryParam)) {
       setSelectedCategory(categoryParam)
     }
+    const searchParam = searchParams.get("search")
+    if (searchParam) {
+      setSearchQuery(searchParam)
+    }
   }, [searchParams])
 
-  const filteredProducts = useMemo(() => {
-    return allProducts.filter((product) => {
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = allProducts.filter((product) => {
       const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
+      
+      const matchesStone = selectedStone === "All Stones" || 
+        (product.stoneType && product.stoneType.toLowerCase().includes(selectedStone.toLowerCase()))
+
+      const matchesStock = !inStockOnly || (product.stock && product.stock > 0)
+
       const matchesSearch = searchQuery.trim() === "" || 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (product.stoneType && product.stoneType.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (product.description && product.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (product.origin && product.origin.toLowerCase().includes(searchQuery.toLowerCase()))
-      return matchesCategory && matchesSearch
+
+      return matchesCategory && matchesStone && matchesStock && matchesSearch
     })
-  }, [selectedCategory, searchQuery, allProducts])
+
+    // Sort
+    result = [...result].sort((a, b) => {
+      if (sortBy === "price_asc") return a.price - b.price
+      if (sortBy === "price_desc") return b.price - a.price
+      if (sortBy === "name_asc") return a.name.localeCompare(b.name)
+      return 0 // featured / default
+    })
+
+    return result
+  }, [selectedCategory, selectedStone, inStockOnly, sortBy, searchQuery, allProducts])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,7 +148,17 @@ function ShopContent() {
     setIsVisible(false)
     const timer = setTimeout(() => setIsVisible(true), 40)
     return () => clearTimeout(timer)
-  }, [selectedCategory, searchQuery])
+  }, [selectedCategory, selectedStone, inStockOnly, sortBy, searchQuery])
+
+  const hasActiveFilters = selectedCategory !== "all" || selectedStone !== "All Stones" || inStockOnly || searchQuery.trim() !== ""
+
+  const resetAllFilters = () => {
+    setSelectedCategory("all")
+    setSelectedStone("All Stones")
+    setInStockOnly(false)
+    setSearchQuery("")
+    setSortBy("featured")
+  }
 
   return (
     <div className="pt-28 pb-20">
@@ -120,26 +177,16 @@ function ShopContent() {
           </p>
         </div>
 
-        {/* Filter and Search Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-border/60">
-          {/* Mobile Filter Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden w-full sm:w-auto inline-flex items-center justify-center gap-2 text-sm font-medium text-foreground bg-card border border-border/60 px-5 py-2.5 rounded-full"
-          >
-            <SlidersHorizontal className="w-4 h-4 text-primary" />
-            Filter Categories ({categories.find(c => c.id === selectedCategory)?.label})
-          </button>
-
-          {/* Desktop Categories */}
-          <div className="hidden lg:flex items-center gap-2 flex-wrap">
+        {/* Categories Bar */}
+        <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border/60 overflow-x-auto">
+          {/* Categories */}
+          <div className="flex items-center gap-2 flex-wrap">
             {categories.map((category) => (
               <button
                 key={category.id}
                 type="button"
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-5 py-2 rounded-full text-xs font-medium tracking-wide uppercase boty-transition ${
+                className={`px-5 py-2 rounded-full text-xs font-medium tracking-wide uppercase boty-transition whitespace-nowrap ${
                   selectedCategory === category.id
                     ? "bg-primary text-primary-foreground shadow-[0_4px_16px_rgba(158,86,50,0.3)]"
                     : "bg-card text-foreground/75 hover:text-foreground border border-border/50 hover:border-primary/30"
@@ -151,14 +198,14 @@ function ShopContent() {
           </div>
 
           {/* Search Input */}
-          <div className="relative w-full md:w-64">
+          <div className="relative min-w-[240px] hidden sm:block">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search stone, origin..."
-              className="w-full bg-card border border-border/60 rounded-full pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary boty-transition"
+              className="w-full bg-card border border-border/60 rounded-full pl-10 pr-8 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary boty-transition"
             />
             {searchQuery && (
               <button
@@ -172,71 +219,137 @@ function ShopContent() {
           </div>
         </div>
 
-        {/* Mobile Filters Modal */}
-        {showFilters && (
-          <div className="lg:hidden fixed inset-0 z-50 bg-background/95 backdrop-blur-md p-6 overflow-y-auto">
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
-              <h2 className="font-serif text-2xl text-foreground font-medium">Stone Collections</h2>
-              <button
-                type="button"
-                onClick={() => setShowFilters(false)}
-                className="p-2 text-foreground/80 hover:text-foreground"
-              >
-                <X className="w-6 h-6" />
-              </button>
+        {/* Advanced Filters & Sorting Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 p-4 rounded-2xl bg-card/60 border border-border/50 text-xs">
+          {/* Left: Stone Variety & Stock Filter */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <Filter className="w-3.5 h-3.5 text-primary" />
+              <span className="uppercase tracking-wider text-[11px] font-semibold text-foreground">Stone:</span>
             </div>
-            <div className="space-y-3">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory(category.id)
-                    setShowFilters(false)
-                  }}
-                  className={`w-full px-6 py-4 rounded-2xl text-left text-sm font-medium tracking-wide uppercase boty-transition ${
-                    selectedCategory === category.id
-                      ? "bg-primary text-primary-foreground shadow-md"
-                      : "bg-card text-foreground border border-border/50"
-                  }`}
-                >
-                  {category.label}
-                </button>
+            <select
+              value={selectedStone}
+              onChange={(e) => setSelectedStone(e.target.value)}
+              className="bg-background border border-border/60 rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary"
+            >
+              {stoneTypes.map((stone) => (
+                <option key={stone} value={stone}>
+                  {stone}
+                </option>
               ))}
-            </div>
-          </div>
-        )}
+            </select>
 
-        {/* Product Count */}
-        <div className="mb-6 flex items-center justify-between">
-          <p className="text-xs text-muted-foreground tracking-wider uppercase">
-            Showing <span className="text-foreground font-semibold">{filteredProducts.length}</span> handcrafted {filteredProducts.length === 1 ? "piece" : "pieces"}
-          </p>
-          {selectedCategory !== "all" && (
+            {/* In Stock Checkbox */}
+            <label className="inline-flex items-center gap-2 cursor-pointer select-none text-foreground/90 ml-2">
+              <input
+                type="checkbox"
+                checked={inStockOnly}
+                onChange={(e) => setInStockOnly(e.target.checked)}
+                className="rounded border-border text-primary focus:ring-primary w-3.5 h-3.5"
+              />
+              <span className="text-[11px]">In-Stock Editions Only</span>
+            </label>
+          </div>
+
+          {/* Right: Sorting */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <ArrowUpDown className="w-3.5 h-3.5 text-primary" />
+              <span className="uppercase tracking-wider text-[11px] font-semibold text-foreground">Sort By:</span>
+            </div>
+            <select
+              value={sortBy}
+              onChange={(e: any) => setSortBy(e.target.value)}
+              className="bg-background border border-border/60 rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-primary font-medium"
+            >
+              <option value="featured">Atelier Curated</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="name_asc">Alphabetical (A–Z)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Mobile Search Input */}
+        <div className="relative w-full sm:hidden mb-6">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search stone, origin..."
+            className="w-full bg-card border border-border/60 rounded-full pl-10 pr-8 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary boty-transition"
+          />
+          {searchQuery && (
             <button
               type="button"
-              onClick={() => setSelectedCategory("all")}
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Active Filter Chips & Product Count */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="text-xs text-muted-foreground tracking-wider uppercase">
+              Showing <span className="text-foreground font-semibold">{filteredAndSortedProducts.length}</span> handcrafted {filteredAndSortedProducts.length === 1 ? "piece" : "pieces"}
+            </p>
+
+            {hasActiveFilters && (
+              <div className="flex items-center gap-1.5 ml-2">
+                {selectedCategory !== "all" && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
+                    {categories.find(c => c.id === selectedCategory)?.label}
+                    <button type="button" onClick={() => setSelectedCategory("all")}><X className="w-3 h-3" /></button>
+                  </span>
+                )}
+                {selectedStone !== "All Stones" && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
+                    {selectedStone}
+                    <button type="button" onClick={() => setSelectedStone("All Stones")}><X className="w-3 h-3" /></button>
+                  </span>
+                )}
+                {inStockOnly && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
+                    In-Stock
+                    <button type="button" onClick={() => setInStockOnly(false)}><X className="w-3 h-3" /></button>
+                  </span>
+                )}
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
+                    &ldquo;{searchQuery}&rdquo;
+                    <button type="button" onClick={() => setSearchQuery("")}><X className="w-3 h-3" /></button>
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetAllFilters}
               className="text-xs text-primary hover:underline font-medium"
             >
-              Reset filter
+              Reset all filters
             </button>
           )}
         </div>
 
         {/* Product Grid */}
-        {filteredProducts.length === 0 ? (
+        {filteredAndSortedProducts.length === 0 ? (
           <div className="text-center py-24 bg-card rounded-3xl border border-border/50">
             <p className="text-lg font-serif text-foreground mb-2">No matching stone pieces found</p>
-            <p className="text-sm text-muted-foreground mb-6">Try searching for &quot;Carrara&quot;, &quot;Travertine&quot;, or &quot;Bowl&quot;.</p>
+            <p className="text-sm text-muted-foreground mb-6">Try broadening your stone variety, category, or search keywords.</p>
             <button
               type="button"
-              onClick={() => {
-                setSelectedCategory("all")
-                setSearchQuery("")
-              }}
-              className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full text-xs font-medium uppercase tracking-wider"
+              onClick={resetAllFilters}
+              className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-primary/90 boty-transition shadow-sm"
             >
-              View All Works
+              Reset All Filters & View All
             </button>
           </div>
         ) : (
@@ -244,7 +357,7 @@ function ShopContent() {
             ref={gridRef}
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {filteredProducts.map((product, index) => (
+            {filteredAndSortedProducts.map((product, index) => (
               <ProductCard 
                 key={product.id}
                 product={product}
@@ -264,20 +377,22 @@ function ProductCard({
   index, 
   isVisible 
 }: { 
-  product: Product
+  product: any
   index: number
   isVisible: boolean
 }) {
   const { addItem } = useCart()
+  const { toggleWishlist, isInWishlist } = useWishlist()
+  const isFavorited = isInWishlist(product.id)
 
   return (
     <div
       className={`group transition-all duration-700 ease-out ${
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
       }`}
-      style={{ transitionDelay: `${index * 60}ms` }}
+      style={{ transitionDelay: `${index * 50}ms` }}
     >
-      <div className="bg-card rounded-3xl overflow-hidden border border-border/40 boty-shadow boty-transition group-hover:-translate-y-1 group-hover:border-primary/40 flex flex-col h-full">
+      <div className="bg-card rounded-3xl overflow-hidden border border-border/40 boty-shadow boty-transition group-hover:-translate-y-1 group-hover:border-primary/40 flex flex-col h-full relative">
         {/* Image Box */}
         <Link href={`/product/${product.id}`} className="relative aspect-[4/3] bg-muted overflow-hidden block">
           <Image
@@ -302,6 +417,32 @@ function ProductCard({
               {product.badge}
             </span>
           )}
+
+          {/* Wishlist Button on Card */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              toggleWishlist({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                stoneType: product.stoneType,
+                origin: product.origin,
+                description: product.dimensions
+              })
+            }}
+            className={`absolute top-4 right-4 w-9 h-9 rounded-full backdrop-blur-md border flex items-center justify-center boty-transition shadow-sm ${
+              isFavorited
+                ? "bg-primary/20 border-primary text-primary"
+                : "bg-background/80 border-border/60 text-muted-foreground hover:text-foreground"
+            }`}
+            aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart className={`w-4 h-4 ${isFavorited ? "fill-primary text-primary" : ""}`} />
+          </button>
 
           {/* Stone Origin */}
           <span className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md text-[11px] font-medium bg-background/85 backdrop-blur-sm text-foreground/80 border border-white/20">
@@ -351,7 +492,6 @@ function ProductCard({
             <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-4">
               {product.description ? product.description.replace(/<[^>]+>/g, " ") : ""}
             </p>
-
           </div>
 
           <div className="pt-4 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">

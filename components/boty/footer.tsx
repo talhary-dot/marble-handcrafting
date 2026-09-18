@@ -13,15 +13,15 @@ const footerLinks = {
   ],
   about: [
     { name: "The Atelier Story", href: "/#craft-story" },
-    { name: "Stone Quarries & Heritage", href: "/#craft-story" },
-    { name: "Lapidary Artisans", href: "/#craft-story" },
-    { name: "Stone Care Guide", href: "/shop" }
+    { name: "Architectural Bespoke", href: "/bespoke" },
+    { name: "Stone Care & Preservation", href: "/care" },
+    { name: "Stone Quarries & Provenance", href: "/#craft-story" }
   ],
   support: [
-    { name: "Custom Commissions", href: "/#craft-story" },
-    { name: "Crated Shipping & Transit", href: "/shop" },
-    { name: "Authenticity & Geological Origin", href: "/#craft-story" },
-    { name: "Client Care", href: "/shop" }
+    { name: "Atelier Concierge", href: "/contact" },
+    { name: "Patron Wishlist", href: "/wishlist" },
+    { name: "Custom Commissions", href: "/bespoke" },
+    { name: "Crated Freight & Transit", href: "/contact" }
   ]
 }
 

@@ -50,6 +50,7 @@ export const viewport: Viewport = {
 }
 
 import { QueryProvider } from '@/components/providers/query-provider'
+import { WishlistProvider } from '@/components/boty/wishlist-context'
 
 export default function RootLayout({
   children,
@@ -61,7 +62,9 @@ export default function RootLayout({
       <body className={`${dmSans.variable} ${playfairDisplay.variable} font-sans antialiased`}>
         <QueryProvider>
           <CartProvider>
-            {children}
+            <WishlistProvider>
+              {children}
+            </WishlistProvider>
           </CartProvider>
         </QueryProvider>
         <Analytics />

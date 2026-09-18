@@ -32,11 +32,34 @@
             </intent-filter>
         </activity>
 
-        <!-- Product Detail Activity -->
+        <!-- Product Detail Activity with Deep Linking & Backstack Support -->
         <activity
             android:name=".ProductDetailActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+
+            <!-- Custom Scheme: sangtarash://product/{id} -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="sangtarash"
+                    android:host="product" />
+            </intent-filter>
+
+            <!-- Web App Links: https://marble-handicrafts.netlify.app/product/{id} -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="marble-handicrafts.netlify.app"
+                    android:pathPrefix="/product/" />
+            </intent-filter>
+        </activity>
 
         <!-- Shopping Cart & Inquiry Activity -->
         <activity

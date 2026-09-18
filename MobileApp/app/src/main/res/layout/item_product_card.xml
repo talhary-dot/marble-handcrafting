@@ -66,6 +66,20 @@
             android:paddingBottom="4dp"
             android:textColor="@color/text_primary"
             android:textSize="10sp" />
+
+        <!-- Wishlist Toggle Button -->
+        <ImageView
+            android:id="@+id/btn_card_wishlist"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_badge"
+            android:padding="7dp"
+            android:src="@drawable/ic_heart"
+            android:contentDescription="Wishlist" />
     </RelativeLayout>
 
     <!-- Content Details -->

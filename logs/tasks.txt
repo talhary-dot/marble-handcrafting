@@ -7,86 +7,91 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware)
 1. REBRANDING TO SANG TARASH
    - Updated layout, metadata, header, footer, watermarks, hero, and copywriting to "Sang Tarash".
    - Brand narrative: Generational stonemasons, solid natural stone, hand-chiseled craft.
+   - Key files: [app/layout.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/layout.tsx), [components/boty/header.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/header.tsx), [components/boty/footer.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/footer.tsx).
 
 2. LOCAL POSTGRESQL WITH PGLITE & DRIZZLE ORM
    - Configured @electric-sql/pglite for in-process/local filesystem PostgreSQL persistence (.pglite/).
-   - Created proper Drizzle ORM schema (lib/db/schema.ts) for `products` and `product_sizes` with relational definitions.
-   - Configured drizzle.config.ts and generated proper Drizzle SQL migration (drizzle/0000_broad_invaders.sql).
-   - Utilized Drizzle migrator (drizzle-orm/pglite/migrator) for schema initialization.
+   - Created proper Drizzle ORM schema ([lib/db/schema.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/db/schema.ts)) for `products` and `product_sizes` with relational definitions.
+   - Configured [drizzle.config.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/drizzle.config.ts) and generated proper Drizzle SQL migration ([drizzle/0000_broad_invaders.sql](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/drizzle/0000_broad_invaders.sql)).
+   - Utilized Drizzle migrator (`drizzle-orm/pglite/migrator`) for schema initialization.
 
 3. TANSTACK REACT QUERY INTEGRATION
-   - Installed @tanstack/react-query.
-   - Built QueryProvider (components/providers/query-provider.tsx) wrapped in app/layout.tsx.
-   - Created custom hooks (hooks/use-products.ts): useProducts, useProduct, useCreateProduct, useUpdateProduct, useDeleteProduct, useSeedDatabase.
+   - Installed `@tanstack/react-query`.
+   - Built QueryProvider ([components/providers/query-provider.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/providers/query-provider.tsx)) wrapped in [app/layout.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/layout.tsx).
+   - Created custom hooks ([hooks/use-products.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/hooks/use-products.ts)): `useProducts`, `useProduct`, `useCreateProduct`, `useUpdateProduct`, `useDeleteProduct`, `useSeedDatabase`.
 
 4. DYNAMIC ADMIN PORTAL (/admin)
-   - Built Admin Dashboard (app/admin/page.tsx) with live product inventory, price ranges, search/filter, and instant actions.
-   - Created Product Form component (components/admin/product-form.tsx):
+   - Built Admin Dashboard ([app/admin/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/page.tsx)) with live product inventory, price ranges, search/filter, and instant actions.
+   - Created Product Form component ([components/admin/product-form.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/admin/product-form.tsx)):
      * Description validator with live word count counter (capped at max 2000 words).
      * Multi-size & variant pricing manager (each size has sizeName, dimensions, weight, price, originalPrice, stock, sku).
      * Size-specific image gallery uploader (upload images specific to each size).
      * Featured image uploader.
      * Clean URL slug generator and editor.
      * SEO suite with Meta Title, Meta Description, and live Google SERP preview snippet.
-   - Created New Product Page (app/admin/products/new/page.tsx).
-   - Created Edit Product Page (app/admin/products/[id]/edit/page.tsx).
+   - Created New Product Page ([app/admin/products/new/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/products/new/page.tsx)).
+   - Created Edit Product Page ([app/admin/products/[id]/edit/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/products/%5Bid%5D/edit/page.tsx)).
 
 5. CLOUDINARY UPLOAD PIPELINE
-   - Configured Cloudinary client (lib/cloudinary.ts) loading credentials exclusively from process.env with zero hardcoded secrets.
-   - Created API upload route (app/api/upload/route.ts) accepting multipart uploads and returning secure Cloudinary URLs.
+   - Configured Cloudinary client ([lib/cloudinary.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/cloudinary.ts)) loading credentials exclusively from `process.env` with zero hardcoded secrets.
+   - Created API upload route ([app/api/upload/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/upload/route.ts)) accepting multipart uploads and returning secure Cloudinary URLs.
 
 6. DATABASE SEEDING SYSTEM
-   - Created lib/db/seed.ts populating the database with 12 handcrafted Sang Tarash products.
+   - Created [lib/db/seed.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/db/seed.ts) populating the database with 12 handcrafted Sang Tarash products.
    - Added size variants, multiple prices, dimensions, weights, and high-res stone imagery for each product.
-   - Created API seed endpoint (app/api/seed/route.ts) and one-click seed button in the Admin Dashboard.
+   - Created API seed endpoint ([app/api/seed/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/seed/route.ts)) and one-click seed button in the Admin Dashboard.
    - Successfully verified and executed seed script (12 products seeded).
 
 7. SSR-FIRST PRODUCT PAGE WITH URL-DRIVEN VARIANT PICKING
-   - Refactored app/product/[id]/page.tsx as a Server Component (SSR first).
+   - Refactored [app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx) as a Server Component (SSR first).
    - Product title, description (up to 2000 words), stone specifications, and pricing are rendered directly on the server into HTML.
-   - Interactive size selection is driven by URL search parameters (?size=...) via Next.js Links, NOT internal state.
+   - Interactive size selection is driven by URL search parameters (`?size=...`) via Next.js Links, NOT internal state.
    - Dynamic Google JSON-LD structured data schema (Product, Brand, Offers with size URLs, AggregateRating) embedded in every product page.
-   - Created AddToCartSection (components/product/add-to-cart-section.tsx) for interactive cart drawer additions and accordions.
+
+8. CART DRAWER & SLIDING ACQUISITION OVERLAY SYSTEM
+   - Built sliding Cart Drawer ([components/boty/cart-drawer.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/cart-drawer.tsx)) with live acquisition tray counting, subtotal calculation, quantity modifiers, and direct checkout navigation.
+   - Built AddToCartSection ([components/product/add-to-cart-section.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/product/add-to-cart-section.tsx)) with instant variant price updates, quantity counter, and sliding drawer trigger.
+   - Added header cart badge with live item count in [components/boty/header.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/header.tsx).
 
 9. DYNAMIC ENVIRONMENT-AWARE DRIZZLE CONFIGURATION
-   - Updated drizzle.config.ts to dynamically inspect process.env.DATABASE_URL.
-   - Production mode: Uses standard PostgreSQL dialect with process.env.DATABASE_URL.
+   - Updated [drizzle.config.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/drizzle.config.ts) to dynamically inspect `process.env.DATABASE_URL`.
+   - Production mode: Uses standard PostgreSQL dialect with `process.env.DATABASE_URL`.
    - Local mode: Automatically falls back to driver: "pglite" with dbCredentials: { url: "./.pglite" }.
-   - Updated lib/db/index.ts to dynamically connect using `postgres` + `drizzle-orm/postgres-js` when DATABASE_URL is set, and `@electric-sql/pglite` + `drizzle-orm/pglite` locally.
+   - Updated [lib/db/index.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/db/index.ts) to dynamically connect using `postgres` + `drizzle-orm/postgres-js` when `DATABASE_URL` is set, and `@electric-sql/pglite` + `drizzle-orm/pglite` locally.
    - Zero hardcoded secrets or production URLs in code.
 
 10. FULL-FLEDGED RICH TEXT EDITOR WITH CLOUDINARY IMAGE UPLOAD & SSR RENDERING
    - Installed TipTap rich text suite (@tiptap/react, @tiptap/pm, @tiptap/starter-kit, @tiptap/extension-image, @tiptap/extension-link, @tiptap/extension-underline, @tiptap/extension-placeholder).
-   - Built RichTextEditor (components/admin/rich-text-editor.tsx):
+   - Built RichTextEditor ([components/admin/rich-text-editor.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/admin/rich-text-editor.tsx)):
      * Formatting toolbar: Headings (H2, H3, H4), Bold, Italic, Underline, Strikethrough, Bullet/Ordered Lists, Blockquotes, Dividers, Links, Code.
      * Direct Cloudinary image uploader: File picker triggering /api/upload and inserting images inline with alt attributes at the cursor.
      * Image insert by URL modal.
      * Real-time word counter tracking against the 2,000-word limit with active warning thresholds.
      * Mode switcher: Visual WYSIWYG, Raw HTML source editing, and Storefront Live Preview.
-   - Integrated RichTextEditor in product form (components/admin/product-form.tsx) replacing the plain textarea.
-   - Created server-safe HTML sanitizer (lib/sanitize.ts) with zero external dependencies to prevent XSS while preserving rich formatting.
-   - Enhanced SSR product detail page (app/product/[id]/page.tsx) to render full-fledged rich HTML narrative into server HTML.
-   - Added bespoke Sang Tarash typography & prose styling in app/globals.css (.product-rich-description) for serif headings, copper bronze blockquotes, and rounded responsive stone imagery.
+   - Integrated RichTextEditor in product form ([components/admin/product-form.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/admin/product-form.tsx)) replacing the plain textarea.
+   - Created server-safe HTML sanitizer ([lib/sanitize.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/sanitize.ts)) with zero external dependencies to prevent XSS while preserving rich formatting.
+   - Enhanced SSR product detail page ([app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx)) to render full-fledged rich HTML narrative into server HTML.
+   - Added bespoke Sang Tarash typography & prose styling in [app/globals.css](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/globals.css) (`.product-rich-description`) for serif headings, copper bronze blockquotes, and rounded responsive stone imagery.
    - Sanitized SEO meta tags and JSON-LD structured data to strip HTML tags for clean Google SERP snippet indexing.
 
 11. ATELIER ADMIN PORTAL AUTHENTICATION & ROUTE PROTECTION
-   - Strictly enforced Zero Hardcoded Secrets rule: All credentials and keys are read exclusively from process.env with zero fallback credentials in code.
-   - Configured ADMIN_USERNAME, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET in .env.
-   - Implemented stateless session signing and verification with Web Crypto API HMAC-SHA256 (lib/auth.ts).
-   - Built Next.js Edge route protection middleware (middleware.ts):
-     * Guards all /admin/:path* routes, redirecting unauthenticated requests to /admin/login?from=...
-     * Guards mutating API methods (POST, PUT, PATCH, DELETE) across /api/products/*, /api/upload, /api/seed, and /api/admin/* returning 401 Unauthorized.
-     * Automatically redirects already authenticated sessions from /admin/login to /admin.
+   - Strictly enforced Zero Hardcoded Secrets rule: All credentials and keys are read exclusively from `process.env` with zero fallback credentials in code.
+   - Configured `ADMIN_USERNAME`, `ADMIN_PASSWORD`, and `ADMIN_SESSION_SECRET` in `.env`.
+   - Implemented stateless session signing and verification with Web Crypto API HMAC-SHA256 ([lib/auth.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/auth.ts)).
+   - Built Next.js Edge route protection middleware ([middleware.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/middleware.ts)):
+     * Guards all `/admin/:path*` routes, redirecting unauthenticated requests to `/admin/login?from=...`
+     * Guards mutating API methods (POST, PUT, PATCH, DELETE) across `/api/products/*`, `/api/upload`, `/api/seed`, and `/api/admin/*` returning 401 Unauthorized.
+     * Automatically redirects already authenticated sessions from `/admin/login` to `/admin`.
    - Created authentication endpoints:
-     * app/api/admin/login/route.ts: Validates credentials and issues secure httpOnly, sameSite: "lax" cookie.
-     * app/api/admin/logout/route.ts: Clears session cookie.
-     * app/api/admin/me/route.ts: Session state validation.
-   - Built luxury Sang Tarash themed Admin Login UI (app/admin/login/page.tsx) with Copper Bronze styling, password visibility toggle, and error handling.
-   - Created AdminNav component (components/admin/admin-nav.tsx) and updated app/admin/layout.tsx with instant Sign Out action.
+     * [app/api/admin/login/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/admin/login/route.ts): Validates credentials and issues secure httpOnly, sameSite: "lax" cookie.
+     * [app/api/admin/logout/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/admin/logout/route.ts): Clears session cookie.
+     * [app/api/admin/me/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/admin/me/route.ts): Session state validation.
+   - Built luxury Sang Tarash themed Admin Login UI ([app/admin/login/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/login/page.tsx)) with Copper Bronze styling, password visibility toggle, and error handling.
+   - Created AdminNav component ([components/admin/admin-nav.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/admin/admin-nav.tsx)) and updated [app/admin/layout.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/layout.tsx) with instant Sign Out action.
    - Verified full production compilation via `npm run build` (Turbopack, exit code 0).
 
 12. HERO MASTERPIECE SHOWCASE (RIGHT-SIDE HERO INTEGRATION)
-   - Replaced empty right-side void in components/boty/hero.tsx with an interactive, responsive stonecraft showcase.
+   - Replaced empty right-side void in [components/boty/hero.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/hero.tsx) with an interactive, responsive stonecraft showcase.
    - Built interactive 3-piece switcher:
      * 01. Vein Marble Tray (Carrara White & Bronze Vein, $85)
      * 02. Fluted Stone Vessel (Honed Statuario Marble, $120)
@@ -101,18 +106,22 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware)
    - Verified full production compilation via `npm run build` (Turbopack, exit code 0).
 
 13. REPLACED TEMPLATE COSMETIC VIDEO WITH STONECRAFT PHOTOGRAPHY
-   - Removed cosmetic skincare video in the "Stone That Holds Stillness" section of components/boty/feature-section.tsx.
-   - Replaced with high-resolution editorial photograph of the Roman Travertine & pure copper bronze candleholder (/images/products/travertine-candleholder.jpg).
+   - Removed cosmetic skincare video in the "Stone That Holds Stillness" section of [components/boty/feature-section.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/feature-section.tsx).
+   - Replaced with high-resolution editorial photograph of the Roman Travertine & pure copper bronze candleholder (`/images/products/travertine-candleholder.jpg`).
    - Added floating glassmorphic badges:
      * Top: "Roman Travertine & Pure Copper"
      * Bottom: "The Stillness Column — Hand-chiseled architectural stone & warm bronze collar"
-   - Replaced all legacy bento grid video embeds with authentic marble photography (/images/products/carved-stone-bowl.jpg and /images/products/vein-marble-tray.jpg).
+   - Replaced all legacy bento grid video embeds with authentic marble photography (`/images/products/carved-stone-bowl.jpg` and `/images/products/vein-marble-tray.jpg`).
    - Updated legacy heading from "The Marmo Philosophy" to "The Sang Tarash Philosophy".
    - Verified clean production compilation via `npm run build` (Turbopack, exit code 0).
 
-1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
-   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
-   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
+================================================================================
+NATIVE ANDROID CLIENT ARCHITECTURE (MobileApp)
+================================================================================
+
+14. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
+   - Implemented direct build toolchain following [MobileApp/docs/old_app_doc.md](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/docs/old_app_doc.md) architecture.
+   - Built automated PowerShell pipeline ([MobileApp/build.ps1](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/build.ps1)):
      * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
      * Android SDK 34 (`android.jar`)
      * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
@@ -122,388 +131,58 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware)
    - Final release APK: `bin/SangTarash-release.apk`
    - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
 
-2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
-   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
+15. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
+   - Created AppConfig ([MobileApp/app/src/main/java/com/sangtarash/app/config/AppConfig.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/config/AppConfig.java)) with zero hardcoded secrets.
    - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
    - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
-   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
+   - Configured [MobileApp/app/src/main/res/xml/network_security_config.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/res/xml/network_security_config.xml) to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
 
-3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
-   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
+16. BESPOKE SANG TARASH LUXURY STONE AESTHETIC & THEME ENGINE
+   - Designed dark & light luxury stone UI system ([MobileApp/app/src/main/java/com/sangtarash/app/config/ThemeManager.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/config/ThemeManager.java)): Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
    - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
    - High-contrast alabaster typography and gold stone badge accents.
 
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
+17. MULTI-TIER IMAGE ENGINE & NETWORKING
+   - Created ApiClient ([MobileApp/app/src/main/java/com/sangtarash/app/net/ApiClient.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ApiClient.java)):
      * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
      * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
      * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
+   - Created ImageLoader ([MobileApp/app/src/main/java/com/sangtarash/app/net/ImageLoader.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ImageLoader.java)):
      * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
      * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
      * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
 
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
+18. FULL E-COMMERCE USER JOURNEY
+   - `MainActivity` ([MobileApp/app/src/main/java/com/sangtarash/app/MainActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/MainActivity.java)):
      * Atelier header with brand subtitle and real-time acquisition tray counter.
      * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
      * Live search filtering across piece titles, stone varieties, and geographical origins.
      * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
+   - `ProductDetailActivity` ([MobileApp/app/src/main/java/com/sangtarash/app/ProductDetailActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/ProductDetailActivity.java)):
      * Hero stone viewer with interactive gallery thumbnails switcher.
      * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
      * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
      * Architectural narrative, Artisan Story, and Care Instructions cards.
      * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
+   - `CartActivity` ([MobileApp/app/src/main/java/com/sangtarash/app/CartActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/CartActivity.java)):
      * Variant-aware cart rows with dimensions, weight, and unit pricing.
      * Real-time total calculation and quantity modifier.
      * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
+     * Persistent state backed by `CartManager` ([MobileApp/app/src/main/java/com/sangtarash/app/storage/CartManager.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/storage/CartManager.java)).
 
-6. VERIFICATION & BUILD RESULTS
-   - Executed `.\build.ps1` via PowerShell.
-   - Result: Exit code 0, all resources linked, Java compiled, R8 optimized, 4-byte aligned, signed with v1/v2/v3 schemes.
-   - Output binary verified: `bin/SangTarash-release.apk` (54.08 KB).
-================================================================================
-================================================================================
-SANG TARASH — HIGH-PERFORMANCE NATIVE ANDROID MOBILE APP: TASK COMPLETION LOG
-================================================================================
-Date: 2026-09-17
-Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
-
-1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
-   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
-   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
-     * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
-     * Android SDK 34 (`android.jar`)
-     * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
-     * Google R8 bytecode optimizer (`lib\d8.jar`) for aggressive member inlining, dead-code elimination, and class shrinking
-     * Zipalign 4-byte boundary page alignment
-     * Apksigner with auto-generated RSA-2048 `release.keystore` (v1, v2, v3 schemes)
-   - Final release APK: `bin/SangTarash-release.apk`
-   - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
-
-2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
-   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
-   - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
-   - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
-   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
-
-3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
-   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
-   - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
-   - High-contrast alabaster typography and gold stone badge accents.
-
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
-     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
-     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
-     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
-     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
-     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
-     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
-
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
-     * Atelier header with brand subtitle and real-time acquisition tray counter.
-     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
-     * Live search filtering across piece titles, stone varieties, and geographical origins.
-     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
-     * Hero stone viewer with interactive gallery thumbnails switcher.
-     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
-     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
-     * Architectural narrative, Artisan Story, and Care Instructions cards.
-     * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
-     * Variant-aware cart rows with dimensions, weight, and unit pricing.
-     * Real-time total calculation and quantity modifier.
-     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
-
-7. PROFESSIONAL BOUTIQUE LUXURY UI OVERHAUL
-   - Redesigned Size & Variant Picker (`item_size_chip.xml` & `ProductDetailActivity.java`):
-     * Replaced crude indicators with bespoke gold-ring radio selectors (`ic_radio_selected.xml` & `ic_radio_unselected.xml`).
-     * Added dynamic stock badges ("Only 3 left" warning in amber, "8 in stock" in forest green, or "Sold Out").
-     * Integrated live strike-through original price formatting (`tv_size_original_price`) for discounted editions.
-     * Added SKU identifiers and variant dimension/weight hierarchy.
-     * Architectural card states with subtle hairline borders (`bg_variant_card_normal` vs `bg_variant_card_selected`).
-   - Enhanced Product Cards (`item_product_card.xml` & `MainActivity.java`):
-     * Added variant count badges ("3 Sizes" / "Single Edition") and uppercase stone variety classification.
-     * Polished hairline card borders, letter-spaced labels, and responsive click states.
-   - Atelier Heritage Showcase (`activity_main.xml`):
-     * Added "The Sang Tarash Philosophy" curated banner with verified natural stone proof points (100% Solid Stone, Hand-Chiseled Finish, Crate Shipping).
-     * Automatically minimizes/hides during active search or category filtering.
-   - Recompiled and verified release build: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
-================================================================================
-================================================================================
-SANG TARASH — HIGH-PERFORMANCE NATIVE ANDROID MOBILE APP: TASK COMPLETION LOG
-================================================================================
-Date: 2026-09-17
-Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
-
-1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
-   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
-   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
-     * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
-     * Android SDK 34 (`android.jar`)
-     * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
-     * Google R8 bytecode optimizer (`lib\d8.jar`) for aggressive member inlining, dead-code elimination, and class shrinking
-     * Zipalign 4-byte boundary page alignment
-     * Apksigner with auto-generated RSA-2048 `release.keystore` (v1, v2, v3 schemes)
-   - Final release APK: `bin/SangTarash-release.apk`
-   - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
-
-2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
-   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
-   - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
-   - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
-   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
-
-3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
-   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
-   - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
-   - High-contrast alabaster typography and gold stone badge accents.
-
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
-     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
-     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
-     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
-     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
-     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
-     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
-
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
-     * Atelier header with brand subtitle and real-time acquisition tray counter.
-     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
-     * Live search filtering across piece titles, stone varieties, and geographical origins.
-     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
-     * Hero stone viewer with interactive gallery thumbnails switcher.
-     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
-     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
-     * Architectural narrative, Artisan Story, and Care Instructions cards.
-     * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
-     * Variant-aware cart rows with dimensions, weight, and unit pricing.
-     * Real-time total calculation and quantity modifier.
-     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
-
-7. PROFESSIONAL BOUTIQUE LUXURY UI OVERHAUL
-   - Redesigned Size & Variant Picker (`item_size_chip.xml` & `ProductDetailActivity.java`):
-     * Replaced crude indicators with bespoke gold-ring radio selectors (`ic_radio_selected.xml` & `ic_radio_unselected.xml`).
-     * Added dynamic stock badges ("Only 3 left" warning in amber, "8 in stock" in forest green, or "Sold Out").
-     * Integrated live strike-through original price formatting (`tv_size_original_price`) for discounted editions.
-     * Added SKU identifiers and variant dimension/weight hierarchy.
-     * Architectural card states with subtle hairline borders (`bg_variant_card_normal` vs `bg_variant_card_selected`).
-   - Enhanced Product Cards (`item_product_card.xml` & `MainActivity.java`):
-     * Added variant count badges ("3 Sizes" / "Single Edition") and uppercase stone variety classification.
-     * Polished hairline card borders, letter-spaced labels, and responsive click states.
-   - Atelier Heritage Showcase (`activity_main.xml`):
-     * Added "The Sang Tarash Philosophy" curated banner with verified natural stone proof points (100% Solid Stone, Hand-Chiseled Finish, Crate Shipping).
-     * Automatically minimizes/hides during active search or category filtering.
-   - Recompiled and verified release build: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
-
-8. DYNAMIC .ENV CONFIGURATION INGESTION PIPELINE
-   - Created `MobileApp/.env` and `MobileApp/.env.example` defining:
-     * `BACKEND_URL`: Dynamic API server endpoint (defaults to `http://10.0.2.2:3000` for emulator, easily swappable for physical device or production).
+19. DYNAMIC .ENV CONFIGURATION INGESTION PIPELINE
+   - Created [MobileApp/.env](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/.env) and `MobileApp/.env.example` defining:
+     * `BACKEND_URL`: Dynamic API server endpoint (defaults to `https://marble-handicrafts.netlify.app`).
      * `APP_NAME`: Application display name.
-     * `APP_ENVIRONMENT`: Environment tag (`development`, `staging`, `production`).
+     * `APP_ENVIRONMENT`: Environment tag (`production`).
      * `REQUEST_TIMEOUT_MS`: Network socket timeout (10000 ms).
      * `ENABLE_OFFLINE_CACHE`: Local caching toggle.
    - Created `MobileApp/.gitignore` protecting `.env`, build folders, and signing keystores from git commits.
-   - Updated `MobileApp/build.ps1` to ingest `.env` variables at build time and dynamically generate `EnvConfig.java` in `build/gen/com/sangtarash/app/config/` without UTF-8 BOM.
-   - Updated `AppConfig.java` to initialize from `EnvConfig.BACKEND_URL`, `EnvConfig.REQUEST_TIMEOUT_MS`, and `EnvConfig.APP_ENVIRONMENT` with zero hardcoded secrets.
-   - Updated `ApiClient.java` to utilize dynamic timeout settings.
-   - Verified automated build with `.env` ingestion: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
-================================================================================
+   - Updated [MobileApp/build.ps1](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/build.ps1) to ingest `.env` variables at build time and dynamically generate `EnvConfig.java` in `build/gen/com/sangtarash/app/config/` without UTF-8 BOM.
+   - Updated [AppConfig.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/config/AppConfig.java) to initialize from `EnvConfig.BACKEND_URL`, `EnvConfig.REQUEST_TIMEOUT_MS`, and `EnvConfig.APP_ENVIRONMENT` with zero hardcoded secrets.
+   - Updated [ApiClient.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ApiClient.java) to utilize dynamic timeout settings.
 
-9. GITHUB REPOSITORY CREATION & INITIALIZATION (`marble-handcrafting`)
-   - Created remote repository `talhary-dot/marble-handcrafting` on GitHub via GitHub CLI (`gh repo create marble-handcrafting --public`).
-   - Configured `.gitignore` in `MobileApp/` ensuring zero leakage of:
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
-     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
-     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
-     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
-     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
-     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
-     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
-
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
-     * Atelier header with brand subtitle and real-time acquisition tray counter.
-     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
-     * Live search filtering across piece titles, stone varieties, and geographical origins.
-     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
-     * Hero stone viewer with interactive gallery thumbnails switcher.
-     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
-     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
-     * Architectural narrative, Artisan Story, and Care Instructions cards.
-     * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
-     * Variant-aware cart rows with dimensions, weight, and unit pricing.
-     * Real-time total calculation and quantity modifier.
-     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
-
-6. VERIFICATION & BUILD RESULTS
-   - Executed `.\build.ps1` via PowerShell.
-   - Result: Exit code 0, all resources linked, Java compiled, R8 optimized, 4-byte aligned, signed with v1/v2/v3 schemes.
-   - Output binary verified: `bin/SangTarash-release.apk` (54.08 KB).
-================================================================================
-================================================================================
-SANG TARASH — HIGH-PERFORMANCE NATIVE ANDROID MOBILE APP: TASK COMPLETION LOG
-================================================================================
-Date: 2026-09-17
-Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
-
-1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
-   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
-   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
-     * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
-     * Android SDK 34 (`android.jar`)
-     * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
-     * Google R8 bytecode optimizer (`lib\d8.jar`) for aggressive member inlining, dead-code elimination, and class shrinking
-     * Zipalign 4-byte boundary page alignment
-     * Apksigner with auto-generated RSA-2048 `release.keystore` (v1, v2, v3 schemes)
-   - Final release APK: `bin/SangTarash-release.apk`
-   - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
-
-2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
-   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
-   - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
-   - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
-   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
-
-3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
-   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
-   - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
-   - High-contrast alabaster typography and gold stone badge accents.
-
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
-     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
-     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
-     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
-     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
-     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
-     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
-
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
-     * Atelier header with brand subtitle and real-time acquisition tray counter.
-     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
-     * Live search filtering across piece titles, stone varieties, and geographical origins.
-     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
-     * Hero stone viewer with interactive gallery thumbnails switcher.
-     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
-     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
-     * Architectural narrative, Artisan Story, and Care Instructions cards.
-     * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
-     * Variant-aware cart rows with dimensions, weight, and unit pricing.
-     * Real-time total calculation and quantity modifier.
-     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
-
-7. PROFESSIONAL BOUTIQUE LUXURY UI OVERHAUL
-   - Redesigned Size & Variant Picker (`item_size_chip.xml` & `ProductDetailActivity.java`):
-     * Replaced crude indicators with bespoke gold-ring radio selectors (`ic_radio_selected.xml` & `ic_radio_unselected.xml`).
-     * Added dynamic stock badges ("Only 3 left" warning in amber, "8 in stock" in forest green, or "Sold Out").
-     * Integrated live strike-through original price formatting (`tv_size_original_price`) for discounted editions.
-     * Added SKU identifiers and variant dimension/weight hierarchy.
-     * Architectural card states with subtle hairline borders (`bg_variant_card_normal` vs `bg_variant_card_selected`).
-   - Enhanced Product Cards (`item_product_card.xml` & `MainActivity.java`):
-     * Added variant count badges ("3 Sizes" / "Single Edition") and uppercase stone variety classification.
-     * Polished hairline card borders, letter-spaced labels, and responsive click states.
-   - Atelier Heritage Showcase (`activity_main.xml`):
-     * Added "The Sang Tarash Philosophy" curated banner with verified natural stone proof points (100% Solid Stone, Hand-Chiseled Finish, Crate Shipping).
-     * Automatically minimizes/hides during active search or category filtering.
-   - Recompiled and verified release build: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
-================================================================================
-================================================================================
-SANG TARASH — HIGH-PERFORMANCE NATIVE ANDROID MOBILE APP: TASK COMPLETION LOG
-================================================================================
-Date: 2026-09-17
-Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
-
-1. ULTRA-LIGHTWEIGHT ZERO-GRADLE NATIVE BUILD PIPELINE
-   - Implemented direct build toolchain following MobileApp/docs/old_app_doc.md architecture.
-   - Built automated 6-step PowerShell pipeline (MobileApp/build.ps1):
-     * OpenJDK 17.0.18 LTS (`javac` with `-g:none` debug symbol stripping)
-     * Android SDK 34 (`android.jar`)
-     * AAPT2 (`aapt2.exe`) for resource compilation and manifest linking
-     * Google R8 bytecode optimizer (`lib\d8.jar`) for aggressive member inlining, dead-code elimination, and class shrinking
-     * Zipalign 4-byte boundary page alignment
-     * Apksigner with auto-generated RSA-2048 `release.keystore` (v1, v2, v3 schemes)
-   - Final release APK: `bin/SangTarash-release.apk`
-   - Total binary size: **54.08 KB** (Ultra-compact, zero Gradle daemon overhead, zero runtime bloat).
-
-2. ZERO HARDCODED SECRETS & DYNAMIC ENDPOINT CONFIGURATION
-   - Created AppConfig (`com.sangtarash.app.config.AppConfig`) with zero hardcoded secrets.
-   - Local dev presets: `http://10.0.2.2:3000` (Android Emulator loopback) and `http://localhost:3000`.
-   - In-app interactive dialog allowing instant endpoint updates persisted securely to private SharedPreferences.
-   - Configured `network_security_config.xml` to allow cleartext HTTP traffic strictly for local development domains (`localhost`, `127.0.0.1`, `10.0.2.2`) while enforcing TLS everywhere else.
-
-3. BESPOKE SANG TARASH LUXURY STONE AESTHETIC
-   - Designed dark luxury stone UI system: Obsidian (`#0D0D0D`), Stone Surface (`#161616`), Card Elevated (`#1E1E1E`), Copper Bronze (`#C5A059`), and Antique Gold (`#D4AF37`).
-   - Custom vector drawables: chiseled stone vessel monogram icon, cart, search, stone specs, and responsive buttons.
-   - High-contrast alabaster typography and gold stone badge accents.
-
-4. MULTI-TIER IMAGE ENGINE & NETWORKING
-   - Created ApiClient (`com.sangtarash.app.net.ApiClient`):
-     * Asynchronous HTTP engine using `HttpURLConnection` and thread pool executor.
-     * Dynamic URL resolution handling both local relative paths (`/images/products/...`) and external Cloudinary CDN URLs.
-     * Consumes `GET /api/products` (with optional `?category=...`) and `GET /api/products/[id]`.
-   - Created ImageLoader (`com.sangtarash.app.net.ImageLoader`):
-     * Multi-tier in-memory `LruCache<String, Bitmap>` (allocating 1/8th of runtime memory).
-     * Sub-sampled bitmap downsampling (`calculateInSampleSize`) avoiding `OutOfMemoryError` on high-resolution stone photography.
-     * Asynchronous background loading with view-recycling tag verification for smooth 60 FPS scrolling.
-
-5. FULL E-COMMERCE USER JOURNEY
-   - `MainActivity`:
-     * Atelier header with brand subtitle and real-time acquisition tray counter.
-     * Dynamic category filter pills (*All Pieces*, *Home Objects*, *Tableware*, *Sculptures*).
-     * Live search filtering across piece titles, stone varieties, and geographical origins.
-     * Product cards with stone thumbnail, origin badge, price range, and quick inspect trigger.
-   - `ProductDetailActivity`:
-     * Hero stone viewer with interactive gallery thumbnails switcher.
-     * Geological specifications panel (Stone Variety, Origin, Finish, Dimensions, Weight, SKU).
-     * Interactive variant selector: dynamic chips updating dimensions, weight, stock status, and live pricing.
-     * Architectural narrative, Artisan Story, and Care Instructions cards.
-     * Quantity adjuster and sticky "Acquire Piece" action.
-   - `CartActivity`:
-     * Variant-aware cart rows with dimensions, weight, and unit pricing.
-     * Real-time total calculation and quantity modifier.
-     * "Submit Acquisition Inquiry" dialog capturing customer name and contact details.
-     * Persistent state backed by `CartManager` (`com.sangtarash.app.storage.CartManager`).
-
-8. DYNAMIC .ENV CONFIGURATION INGESTION PIPELINE
-   - Created `MobileApp/.env` and `MobileApp/.env.example` defining:
-     * `BACKEND_URL`: Dynamic API server endpoint (defaults to `http://10.0.2.2:3000` for emulator, easily swappable for physical device or production).
-     * `APP_NAME`: Application display name.
-     * `APP_ENVIRONMENT`: Environment tag (`development`, `staging`, `production`).
-     * `REQUEST_TIMEOUT_MS`: Network socket timeout (10000 ms).
-     * `ENABLE_OFFLINE_CACHE`: Local caching toggle.
-   - Created `MobileApp/.gitignore` protecting `.env`, build folders, and signing keystores from git commits.
-   - Updated `MobileApp/build.ps1` to ingest `.env` variables at build time and dynamically generate `EnvConfig.java` in `build/gen/com/sangtarash/app/config/` without UTF-8 BOM.
-   - Updated `AppConfig.java` to initialize from `EnvConfig.BACKEND_URL`, `EnvConfig.REQUEST_TIMEOUT_MS`, and `EnvConfig.APP_ENVIRONMENT` with zero hardcoded secrets.
-   - Updated `ApiClient.java` to utilize dynamic timeout settings.
-   - Verified automated build with `.env` ingestion: `bin/SangTarash-release.apk` (58.4 KB, exit code 0).
-================================================================================
-
-9. GITHUB REPOSITORY CREATION & INITIALIZATION (`marble-handcrafting`)
+20. GITHUB REPOSITORY CREATION & INITIALIZATION (`marble-handcrafting`)
    - Created remote repository `talhary-dot/marble-handcrafting` on GitHub via GitHub CLI (`gh repo create marble-handcrafting --public`).
    - Configured `.gitignore` in `MobileApp/` ensuring zero leakage of:
      * Environment secrets (`.env`, `.env.*`, `.env.local` excluding `.env.example`).
@@ -513,47 +192,177 @@ Project: Sang Tarash (Marble Handicrafts & Architectural Stoneware Mobile App)
    - Initialized local git repository on `main` branch inside `MobileApp/`.
    - Staged and committed native Android application codebase, build automation pipeline, assets, layouts, and documentation.
    - Pushed initial commit to `origin/main` (https://github.com/talhary-dot/marble-handcrafting).
-================================================================================
 
-10. POSTGRESQL PRODUCTION DATABASE MIGRATION & SEEDING
+21. POSTGRESQL PRODUCTION DATABASE MIGRATION & SEEDING
    - Connected to remote Neon PostgreSQL server defined in `.env` (`DATABASE_URL`).
-   - Updated `lib/db/index.ts` to dynamically resolve connection strings from `process.env.DATABASE_URL || process.env.POSTGRES_URI || process.env.POSTGRES_URL`.
-   - Applied Drizzle table schema migrations (`drizzle/0000_broad_invaders.sql` creating `products` and `product_sizes` tables with relational foreign keys).
+   - Updated [lib/db/index.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/db/index.ts) to dynamically resolve connection strings from `process.env.DATABASE_URL || process.env.POSTGRES_URI || process.env.POSTGRES_URL`.
+   - Applied Drizzle table schema migrations ([drizzle/0000_broad_invaders.sql](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/drizzle/0000_broad_invaders.sql) creating `products` and `product_sizes` tables with relational foreign keys).
    - Created standalone migration & seed automation script [scripts/seed-database.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/scripts/seed-database.ts).
    - Successfully populated all 12 Sang Tarash catalog products and 22 size variants into remote PostgreSQL database.
-================================================================================
 
-11. FULL PROJECT REPOSITORY INITIALIZATION & FORCE PUSH (`marble-handcrafting`)
+22. FULL PROJECT REPOSITORY INITIALIZATION & FORCE PUSH (`marble-handcrafting`)
    - Re-initialized root Git repository encompassing the entire monorepo: Next.js frontend, API routes, admin portal, UI components, Drizzle schema/migrations, and `MobileApp` native Android project.
    - Updated root [.gitignore](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/.gitignore) with strict security exclusions (.env files, .pglite, node_modules, .next, *.keystore, build artifacts).
    - Force-pushed complete workspace codebase to `main` branch on [https://github.com/talhary-dot/marble-handcrafting](https://github.com/talhary-dot/marble-handcrafting).
-================================================================================
 
-12. FIXED SSR PRODUCT METADATA GENERATION REFERENCE ERROR
-   - Resolved server-side runtime `ReferenceError: description is not defined` inside `generateMetadata` in `app/product/[id]/page.tsx`.
+23. FIXED SSR PRODUCT METADATA GENERATION REFERENCE ERROR
+   - Resolved server-side runtime `ReferenceError: description is not defined` inside `generateMetadata` in [app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx).
    - Replaced undefined shorthand `description` properties in `openGraph` and `twitter` objects with `description: cleanDescription`.
    - Added null-safe fallback handling for `product.description` and custom SEO overrides.
-================================================================================
 
-13. DYNAMIC ENVIRONMENT & NETLIFY DEPLOYMENT URL RESOLUTION
-   - Replaced hardcoded domain references in `app/product/[id]/page.tsx` with dynamic `getSiteBaseUrl()`.
+24. DYNAMIC ENVIRONMENT & NETLIFY DEPLOYMENT URL RESOLUTION
+   - Replaced hardcoded domain references in [app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx) with dynamic `getSiteBaseUrl()`.
    - Added automated detection for Netlify environment variables (`process.env.URL`, `process.env.DEPLOY_PRIME_URL`, `process.env.SITE_URL`) alongside `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_APP_URL`.
-   - Configured dynamic `metadataBase` in `app/layout.tsx` for clean relative URL resolution across SEO tags, OpenGraph, and JSON-LD schemas.
-================================================================================
+   - Configured dynamic `metadataBase` in [app/layout.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/layout.tsx) for clean relative URL resolution across SEO tags, OpenGraph, and JSON-LD schemas.
 
-14. FIXED MOBILE RESPONSIVE SCROLL OVERLAP ON PRODUCT DETAIL PAGE
-   - Fixed sticky position bug on mobile screens in `app/product/[id]/page.tsx` and `app/product/[id]/product-detail-client.tsx`.
+25. FIXED MOBILE RESPONSIVE SCROLL OVERLAP ON PRODUCT DETAIL PAGE
+   - Fixed sticky position bug on mobile screens in [app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx) and [app/product/[id]/product-detail-client.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/product-detail-client.tsx).
    - Replaced unconditional `sticky top-28` with `lg:sticky lg:top-28` so the product image container flows naturally on mobile/tablet viewports and sticks only on large desktop viewports (`lg:`+), eliminating element overlapping on scroll.
-================================================================================
 
-15. HOMEPAGE & HERO MOBILE RESPONSIVE POLISH
-   - Updated `components/boty/hero.tsx`:
+26. HOMEPAGE & HERO MOBILE RESPONSIVE POLISH
+   - Updated [components/boty/hero.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/hero.tsx):
      * Adjusted top section padding (`pt-28 pb-16 sm:py-24 lg:py-28`) providing clean clearance below the floating fixed navigation header.
      * Fixed tab truncation on mobile by introducing clean `shortName` labels (`Marble Tray`, `Stone Vessel`, `Totem Stand`) for mobile breakpoints while retaining full numbered titles on larger viewports.
      * Fixed trust metrics alignment: Updated "Hand" orphan to "Hand-Cut" with responsive gap (`gap-2 sm:gap-4`) and typography (`text-lg sm:text-2xl`) preventing text collision.
      * Adjusted floating badges and bottom action card inside the image frame with responsive padding (`p-3 sm:p-5`) and font sizes to eliminate overflow.
      * Updated bottom proof strip with responsive text and wrapping (`5.0 (140+ Reviews)` & `Solid Natural Stone`) avoiding right-edge clipping.
-   - Updated `components/boty/header.tsx`:
+   - Updated [components/boty/header.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/header.tsx):
      * Enhanced mobile header padding (`px-3 pt-3 sm:px-4 sm:pt-4`) and nav inner height (`h-[64px] sm:h-[70px]`).
      * Added responsive brand logo scaling (`text-xl sm:text-2xl md:text-3xl`).
+
+27. COMPREHENSIVE E-COMMERCE SUITE & ATELIER SITE ENHANCEMENTS
+   - LUXURY ACQUISITION & CHECKOUT FLOW:
+     * Built dedicated [app/checkout/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/checkout/page.tsx) with customer coordinates, crated shipping address, handling tiers (Insured Timber Crate, White Glove In-Home Placement, Atelier Studio Pickup), custom gift/monogram dedication note, and flexible settlement avenues (WhatsApp Direct Concierge, Direct Bank Wire / Pro-Forma Invoice, Credit/Debit Card).
+     * Built official Certificate of Acquisition confirmation page ([app/checkout/success/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/checkout/success/page.tsx)) with unique order ID, printable certificate trigger (`window.print()`), and direct WhatsApp link with pre-formatted inquiry text.
+     * Connected "Checkout" in [components/boty/cart-drawer.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/cart-drawer.tsx) to `/checkout`.
+     * Connected "Instant Checkout" in [app/product/[id]/product-detail-client.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/product-detail-client.tsx) to add piece to cart and immediately route to `/checkout`.
+   - DATABASE ORDERS PERSISTENCE & ADMIN MANAGEMENT:
+     * Added `orders` table to Drizzle ORM schema ([lib/db/schema.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/db/schema.ts)).
+     * Generated and applied Drizzle migration [drizzle/0001_graceful_king_bedlam.sql](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/drizzle/0001_graceful_king_bedlam.sql) creating the `orders` table in PostgreSQL.
+     * Built public order API endpoints ([app/api/orders/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/orders/route.ts)) for order creation and certificate retrieval.
+     * Built authenticated admin order API endpoints ([app/api/admin/orders/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/admin/orders/route.ts)) for order listing and status updates.
+     * Updated Admin Dashboard ([app/admin/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/admin/page.tsx)) with a full-fledged "Acquisitions & Orders" tab featuring order metrics (Total Acquisitions, Gross Volume, Pending Review, Active Production), status filtering, text search, order details expansion, and instant status modifier dropdown.
+   - PATRON WISHLIST & CURATION SYSTEM:
+     * Created `WishlistContext` ([components/boty/wishlist-context.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/wishlist-context.tsx)) with localStorage client persistence.
+     * Wrapped in [app/layout.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/layout.tsx).
+     * Added interactive Heart toggle buttons on product cards across `/shop`, homepage `ProductGrid`, and product detail pages.
+     * Added Wishlist navigation icon with live badge counter in [components/boty/header.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/header.tsx).
+     * Built dedicated `/wishlist` curation page ([app/wishlist/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/wishlist/page.tsx)) with "Move to Tray", "Acquire All Pieces", and "Clear All".
+   - MULTI-FACETED SHOP FILTERING & GLOBAL SEARCH:
+     * Enhanced [app/shop/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/shop/page.tsx) with sorting (Atelier Curated, Price Low-to-High, Price High-to-Low, Alphabetical), stone variety filtering (Carrara, Travertine, Nero Marquina, Onyx, Rainforest Green), in-stock edition toggle, and active filter chips with one-click clear.
+     * Built global quick-search modal dialog ([components/boty/header.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/header.tsx)) with live autocomplete matching stone variety, origin, and titles, supporting `Cmd/Ctrl + K` keyboard shortcut.
+   - ATELIER BRAND PAGES:
+     * Created [app/bespoke/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/bespoke/page.tsx) for custom architectural stonework commissions (tables, monolith basins, fireplace mantels) with 4-step process timeline and interactive commission brief form.
+     * Created [app/care/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/care/page.tsx) stone preservation guide with daily maintenance rules, stone-specific care notes, and emergency oil stain baking soda poultice instructions.
+     * Created [app/contact/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/contact/page.tsx) atelier concierge page with WhatsApp link, email desk, atelier hours, studio coordinates, message form, and FAQ accordion.
+     * Updated [components/boty/footer.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/components/boty/footer.tsx) with active links to all pages.
+   - TECHNICAL INFRASTRUCTURE & SEO:
+     * Created [app/sitemap.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/sitemap.ts) for dynamic XML sitemap generation indexing all static and dynamic product routes.
+     * Created [app/robots.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/robots.ts) defining search crawler rules.
+     * Created [app/not-found.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/not-found.tsx) for luxury stonecraft 404 experience.
+     * Verified production build via `npm run build` (Turbopack, exit code 0, all routes compiled cleanly).
+
+28. MOBILE APP NATIVE ANDROID FEATURE PARITY
+   - PATRON WISHLIST PERSISTENCE:
+     * Created [com.sangtarash.app.storage.WishlistManager](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/storage/WishlistManager.java) with JSON-backed `SharedPreferences` storage, listener subscription callbacks, and toggle functionality.
+     * Created custom vector drawables [ic_heart.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/res/drawable/ic_heart.xml) and [ic_heart_filled.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/res/drawable/ic_heart_filled.xml).
+     * Added interactive heart toggle buttons to product cards in [item_product_card.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/res/layout/item_product_card.xml) and product details in [activity_product_detail.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/res/layout/activity_product_detail.xml).
+     * Added saved pieces quick filter toggle chip with live count `Saved (X)` in [MainActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/MainActivity.java).
+     * Wired instant wishlist heart toggle on all product cards in `MainActivity` and `ProductDetailActivity` with real-time UI synchronisation.
+   - MULTI-FACETED FILTERING & SORTING:
+     * Added Stone Variety filter dialog to `MainActivity` allowing filtering by: Carrara White, Roman Travertine, Nero Marquina, Calacatta Monolith, Green Onyx, or All Stone.
+     * Added Sorting dialog to `MainActivity` supporting: Atelier Curated, Price: Low to High, Price: High to Low, and Alphabetical: A to Z.
+     * Added dynamic active filter chips row with theme-aware styling.
+   - COMPREHENSIVE LUXURY ACQUISITION CHECKOUT:
+     * Added `ApiClient.submitOrder(Context, JSONObject, Callback)` in [ApiClient.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ApiClient.java) connecting directly to the `/api/orders` backend endpoint.
+     * Overhauled [CartActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/CartActivity.java) with complete luxury acquisition checkout flow:
+       - Customer coordinates: Full Name, Email, Phone, Crating & Delivery Address, City, Country.
+       - Handling & Shipping tiers: Reinforced Timber Crate (Complimentary), White Glove In-Home Placement ($120), Atelier Studio Pickup ($0).
+       - Custom Stone Inscription: Optional chiseling dedication note.
+       - Settlement Avenue selection: Direct WhatsApp Concierge, Direct Bank Wire / Pro-Forma Invoice, Credit / Debit Card.
+       - Real-time order submission to the live `/api/orders` API endpoint.
+       - Interactive Certificate of Acquisition modal dialog on success displaying unique Order ID, acquisition value, handling tier, and quick WhatsApp transmission trigger.
+     * Connected `MainActivity` bottom checkout action directly to `CartActivity`.
+   - THE ATELIER HERITAGE EXTENSIONS:
+     * Added Architectural Bespoke Commissions card in `MainActivity` with dedicated consultation dialog for custom monolith dimensions, stone preferences, and WhatsApp launch.
+     * Added Metamorphic Stone Care & Conservation card in `MainActivity` with scrollable 4-pillar preservation guide (pH-neutral cleansing, annual sealing, blotting protocol, thermal safeguards).
+   - BUILD & RELEASE VERIFICATION:
+     * Executed native Zero-Gradle build script [MobileApp/build.ps1](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/build.ps1).
+     * Output: `MobileApp/bin/SangTarash-release.apk` (78.92 KB, verified v1/v2/v3 signatures).
+
+29. ARCHITECTURAL HARDENING, EDGE CASES & STOREFRONT ENHANCEMENTS
+   - INVENTORY DEDUCTION & STOCK PROTECTION:
+     * Updated [app/api/orders/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/orders/route.ts):
+       - Before order insertion, inspects each ordered item against `product_sizes` in PostgreSQL.
+       - Validates available stock count; returns `409 Conflict` if requested quantity exceeds available pieces in atelier inventory.
+       - Decrements `product_sizes.stock` upon order placement (`stock = Math.max(0, currentStock - qty)`), preventing overselling of limited-edition stone art.
+   - STUDIO ACQUISITION NOTIFICATIONS & WEBHOOKS:
+     * Created [lib/notifications.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/lib/notifications.ts) with zero hardcoded secrets:
+       - Transmits structured webhook events to `process.env.STUDIO_WEBHOOK_URL` (e.g. Discord, Slack, atelier ERP).
+       - Sends rich acquisition email notifications via Resend API when `process.env.RESEND_API_KEY` and `process.env.STUDIO_ALERT_EMAIL` are configured.
+       - Fallback structured logging for development auditability.
+       - Wired into [app/api/orders/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/orders/route.ts) and [app/api/checkout/stripe/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/checkout/stripe/route.ts).
+   - CARD PAYMENT GATEWAY & STRIPE CHECKOUT ROUTING:
+     * Created [app/api/checkout/stripe/route.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/api/checkout/stripe/route.ts):
+       - Supports live Stripe Checkout session generation when `process.env.STRIPE_SECRET_KEY` is provided.
+       - Handles line items, currency formatting, and return URLs.
+       - Provides seamless zero-secret simulated card settlement in development/staging environments when Stripe keys are not provisioned.
+     * Updated [app/checkout/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/checkout/page.tsx) to route "Credit / Debit Card" orders through the card checkout endpoint.
+   - UNIFIED DATABASE MIGRATION RUNNER:
+     * Created [scripts/migrate.ts](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/scripts/migrate.ts) to eliminate schema drift between local `.pglite` and remote Neon PostgreSQL.
+     * Dynamically switches dialect between `@electric-sql/pglite` and `postgres-js` based on `DATABASE_URL` presence.
+   - NATIVE ANDROID L2 DISK-BACKED IMAGE CACHING:
+     * Overhauled [ImageLoader.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ImageLoader.java):
+       - Implemented two-tier cache: L1 Memory (`LruCache<String, Bitmap>`) + L2 Disk Cache (`context.getCacheDir()/stone_cache`).
+       - MD5 URL hashing for collision-free file naming.
+       - Automatically persists downloaded high-resolution stone photography to disk, allowing offline imagery persistence across app restarts.
+   - NATIVE ANDROID DEEP LINKING & BACKSTACK NAVIGATION:
+     * Updated [MobileApp/app/src/main/AndroidManifest.xml](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/AndroidManifest.xml):
+       - Added custom scheme `sangtarash://product/{id}` intent filter.
+       - Added App Link `https://marble-handicrafts.netlify.app/product/{id}` intent filter.
+     * Updated [ProductDetailActivity.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/ProductDetailActivity.java):
+       - Parses incoming `Intent.ACTION_VIEW` deep link URIs to extract stone IDs or slugs.
+       - Added backstack management in `onBackPressed()` ensuring users returning from deep links cleanly navigate to `MainActivity` rather than exiting.
+   - NATIVE ANDROID EXPONENTIAL BACKOFF NETWORK RETRIES:
+     * Updated [ApiClient.java](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/MobileApp/app/src/main/java/com/sangtarash/app/net/ApiClient.java):
+       - Added `executeGetWithRetry` performing up to 3 retry attempts with exponential backoff on temporary network failures and timeouts.
+   - SEO BREADCRUMBLIST STRUCTURED DATA SCHEMA:
+     * Updated [app/product/[id]/page.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/page.tsx) with JSON-LD `BreadcrumbList` schema linking `Home > Collection > [Category] > [Product Name]`.
+   - DYNAMIC OPENGRAPH SOCIAL PREVIEW IMAGE:
+     * Created [app/product/[id]/opengraph-image.tsx](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/app/product/%5Bid%5D/opengraph-image.tsx) using `next/og` `ImageResponse`:
+       - Renders 1200x630 editorial social card in Obsidian `#0D0D0D` and Copper Bronze `#C5A059`.
+       - Displays stone variety, piece name, starting price, and Sang Tarash emblem for social platforms.
+   - VERIFICATION & BUILD RESULTS:
+     * Web application: `npm run build` compiled all 26 static & dynamic routes cleanly (exit code 0).
+     * Android application: `powershell build.ps1` compiled and signed `MobileApp/bin/SangTarash-release.apk` (82.92 KB, verified v1/v2/v3 signatures).
+================================================================================
+
+30. LAUNCH VIDEO TOOLCHAIN & BRAG SKILL INTEGRATION (`latent-spaces/brag`)
+   - Installed and registered the `brag` skill in [.agents/skills/brag/SKILL.md](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/.agents/skills/brag/SKILL.md).
+   - Toolchain verification & readiness:
+     * Node.js v24.10.0: Confirmed installed and operational.
+     * FFmpeg & FFprobe: Confirmed operational on system PATH (`C:\ProgramData\chocolatey\bin\ffmpeg.exe`).
+     * Hyperframes Rendering Engine: Verified CLI suite (`npx hyperframes doctor`).
+     * Headless Chrome Shell: Ensured and downloaded managed headless Chromium shell (`win64-152.0.7977.30`) ready for HTML-to-MP4 frame rendering.
+   - Environment ready for launch video generation via `/brag` workflow.
+================================================================================
+
+31. SANG TARASH LAUNCH PROMO VIDEO WITH LOCAL AI VOICEOVER (`/brag`)
+   - Executed the full `/brag --voice` workflow using Hyperframes and Kokoro TTS:
+     * Scripting & Storyboarding: Created [brag-output/brag-plan.md](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/brag-plan.md) with 5-scene cinematic structure matching Sang Tarash atelier luxury identity.
+     * Voice Synthesis: Generated 14.42s British male narration (`bm_george`) via local Kokoro ONNX model [brag-output/composition/assets/voiceover.wav](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/composition/assets/voiceover.wav) with zero third-party API dependencies or leaked secrets.
+     * Technical Composition: Engineered [brag-output/composition/index.html](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/composition/index.html) with 1080p 16:9 canvas, GSAP timeline, Cinzel & Cormorant Garamond typography, obsidian & gold ambient glows, and high-res photography of flagship monolithic stonecraft pieces.
+     * Pre-Render Validation: Passed `npx hyperframes check` with 0 lint errors, 0 runtime errors, 0 layout occlusions, and 35/35 WCAG AA contrast score.
+     * Video Rendering: Rendered [brag-output/brag.mp4](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/brag.mp4) (18.0s, 540 frames, 4.84 MB) with low-memory frame streaming.
+     * Poster & Frame 0: Extracted high-res poster frame [brag-output/brag.jpg](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/brag.jpg) and baked it into frame 0 of the MP4 using FFmpeg for pristine social media idle thumbnails.
+     * Launch Copy: Generated canonical [brag-output/share-copy.txt](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/share-copy.txt) and platform variants in [brag-output/share-copy-variants.md](file:///c:/Users/Sorcim%20computer/Downloads/marble-handicrafts/brag-output/share-copy-variants.md).
+================================================================================
+
+32. CODEBASE REPOSITORY COMMIT & REMOTE PUSH
+   - Staged all recent features, pages, API routes, mobile app enhancements, and documentation:
+     * Web: Checkout flow, Stripe/simulated card payment, orders API, admin portal order management, bespoke/care/contact pages, wishlist context & page, dynamic OpenGraph image, robots.txt, sitemap.xml, and schema migrations.
+     * Mobile App: Wishlist manager, heart drawables, deep linking intent filters, network retry with exponential backoff, and two-tier L1/L2 image cache.
+     * Launch assets & video tooling: Brag promotional assets and skill registration.
+   - Verified zero hardcoded secrets across all files.
+   - Committed and pushed to remote branch `origin/main`.
 ================================================================================
